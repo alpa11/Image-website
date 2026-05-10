@@ -3,170 +3,240 @@ import { getSiteContent } from "../../data/dataLayer";
 const { process } = getSiteContent();
 ---
 
-<section id="process" class="process-section">
-  <div class="container">
+<section id="process" class="proc-section">
+  <div class="proc-watermark" aria-hidden="true">04</div>
+
+  <div class="container proc-inner">
     <!-- Header -->
-    <div class="process-head" data-animate="process-head">
-      <div class="accent-line" style="margin-bottom: 1.25rem;" />
-      <h2 class="section-title">{process.title}</h2>
-      <p class="section-subtitle" style="margin-top: 1rem; max-width: 52ch;">{process.subtitle}</p>
+    <div class="proc-header" data-anim="proc-head">
+      <div class="proc-eyebrow">
+        <div class="eyebrow-dot" />
+        <span>תהליך עבודה</span>
+      </div>
+      <h2 class="proc-title">{process.title}</h2>
+      <p class="proc-subtitle">{process.subtitle}</p>
     </div>
 
-    <!-- Steps -->
-    <div class="process-steps" data-animate="process-steps">
+    <!-- Steps vertical timeline (desktop) -->
+    <div class="proc-steps" data-anim="proc-steps">
       {process.steps.map((step, i) => (
-        <div class="process-step">
-          <!-- Connector line -->
-          {i < process.steps.length - 1 && (
-            <div class="process-connector" aria-hidden="true" />
-          )}
-
-          <!-- Number -->
-          <div class="process-num-wrap">
-            <div class="process-num">{step.number}</div>
+        <div class="proc-step">
+          <!-- Step number + line -->
+          <div class="proc-step-left">
+            <div class="proc-num-ring">
+              <span class="proc-num">{step.number}</span>
+            </div>
+            {i < process.steps.length - 1 && (
+              <div class="proc-connector" aria-hidden="true" />
+            )}
           </div>
 
           <!-- Content -->
-          <div class="process-content">
-            <h3 class="process-step-title">{step.title}</h3>
-            <p class="process-step-body">{step.body}</p>
+          <div class="proc-step-content">
+            <h3 class="proc-step-title">{step.title}</h3>
+            <p class="proc-step-body">{step.body}</p>
           </div>
         </div>
       ))}
     </div>
 
     <!-- CTA -->
-    <div class="process-cta-wrap" data-animate="process-cta">
-      <p class="process-cta-label">רוצים לדעת יותר על התהליך שלנו?</p>
-      <a href="#contact" class="btn-primary">לשיחת אפיון ראשונית</a>
+    <div class="proc-cta" data-anim="proc-cta">
+      <div class="proc-cta-inner">
+        <p class="proc-cta-text">
+          לא מתחילים לכתוב קוד לפני שמבינים את התהליך שלכם.
+        </p>
+        <a href="#contact" class="btn-primary">לשיחת אפיון ראשונית</a>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .process-section {
+  .proc-section {
     padding-block: 6rem;
     background: #F7FBFC;
+    position: relative;
+    overflow: hidden;
   }
 
-  .process-head {
-    margin-bottom: 3.5rem;
-    max-width: 600px;
+  .proc-watermark {
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+    font-size: clamp(8rem, 20vw, 16rem);
+    font-weight: 900;
+    color: rgba(11,37,69,0.03);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.05em;
   }
 
-  .process-steps {
+  .proc-inner {
+    position: relative;
+    z-index: 1;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0;
-    margin-bottom: 4rem;
-    position: relative;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 5rem;
+    align-items: start;
   }
 
-  .process-step {
-    position: relative;
+  /* Header */
+  .proc-header {
+    position: sticky;
+    top: 5rem;
+  }
+
+  .proc-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 1.25rem;
+  }
+  .eyebrow-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #00AFC6;
+    flex-shrink: 0;
+  }
+  .proc-eyebrow span {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #00AFC6;
+  }
+
+  .proc-title {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 900;
+    color: #0B2545;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .proc-subtitle {
+    font-size: 1rem;
+    color: #4A5568;
+    line-height: 1.75;
+  }
+
+  /* Steps */
+  .proc-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .proc-step {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 0 1.5rem;
+  }
+
+  .proc-step-left {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    padding-inline: 0.75rem;
   }
 
-  .process-connector {
-    position: absolute;
-    top: 28px;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(90deg, #E2E8F0 0%, #00AFC6 50%, #E2E8F0 100%);
-    z-index: 0;
-  }
-
-  .process-num-wrap {
-    position: relative;
-    z-index: 1;
-    margin-bottom: 1.25rem;
-  }
-
-  .process-num {
-    width: 56px;
-    height: 56px;
+  .proc-num-ring {
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
+    border: 2px solid #00AFC6;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.875rem;
-    font-weight: 800;
     background: #FFFFFF;
-    border: 2px solid #00AFC6;
-    color: #00AFC6;
-    box-shadow: 0 0 0 6px rgba(0, 175, 198, 0.08);
-    transition: background 0.2s ease, color 0.2s ease;
+    box-shadow: 0 0 0 5px rgba(0,175,198,0.08);
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+    position: relative;
+    z-index: 1;
   }
 
-  .process-step:hover .process-num {
+  .proc-step:hover .proc-num-ring {
     background: #00AFC6;
+  }
+  .proc-step:hover .proc-num {
     color: #FFFFFF;
   }
 
-  .process-content {
-    flex: 1;
+  .proc-num {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #00AFC6;
+    transition: color 0.2s ease;
   }
 
-  .process-step-title {
-    font-size: 0.95rem;
-    font-weight: 700;
+  .proc-connector {
+    width: 2px;
+    flex: 1;
+    min-height: 3rem;
+    background: linear-gradient(to bottom, #00AFC6, rgba(0,175,198,0.1));
+    margin-block: 0;
+    border-radius: 9999px;
+  }
+
+  .proc-step-content {
+    padding-bottom: 2.5rem;
+    padding-top: 0.75rem;
+  }
+
+  .proc-step-title {
+    font-size: 1.1rem;
+    font-weight: 800;
     color: #0B2545;
     margin-bottom: 0.5rem;
+    line-height: 1.2;
   }
 
-  .process-step-body {
-    font-size: 0.8rem;
+  .proc-step-body {
+    font-size: 0.9rem;
     color: #4A5568;
-    line-height: 1.6;
+    line-height: 1.7;
   }
 
-  .process-cta-wrap {
+  /* CTA */
+  .proc-cta {
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+  }
+
+  .proc-cta-inner {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    padding-top: 2rem;
-    border-top: 1px solid #E2E8F0;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.75rem 2rem;
+    background: #0B2545;
+    border-radius: 1rem;
+    border: 1px solid rgba(0,175,198,0.2);
   }
 
-  .process-cta-label {
-    font-size: 0.95rem;
-    color: #4A5568;
+  .proc-cta-text {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.75);
     font-weight: 500;
+    line-height: 1.5;
+    max-width: 50ch;
   }
 
   @media (max-width: 900px) {
-    .process-steps {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
+    .proc-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .proc-header { position: static; }
+    .proc-cta { grid-column: 1; }
+    .proc-cta-inner { flex-direction: column; align-items: flex-start; }
+    .proc-watermark { font-size: 8rem; }
+  }
 
-    .process-step {
-      flex-direction: row;
-      align-items: flex-start;
-      text-align: start;
-      gap: 1.25rem;
-      padding-inline: 0;
-    }
-
-    .process-connector {
-      display: none;
-    }
-
-    .process-num-wrap {
-      margin-bottom: 0;
-      flex-shrink: 0;
-    }
-
-    .process-cta-wrap {
-      flex-direction: column;
-      text-align: center;
-    }
+  @media (max-width: 540px) {
+    .proc-step { grid-template-columns: 48px 1fr; gap: 0 1rem; }
+    .proc-num-ring { width: 44px; height: 44px; }
+    .proc-cta-inner { padding: 1.25rem; }
   }
 </style>
 
@@ -175,19 +245,19 @@ const { process } = getSiteContent();
   import { ScrollTrigger } from "gsap/ScrollTrigger";
   gsap.registerPlugin(ScrollTrigger);
 
-  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!prefersReduced) {
-    gsap.from("[data-animate='process-head']", {
-      opacity: 0, y: 30, duration: 0.8, ease: "power3.out",
-      scrollTrigger: { trigger: "[data-animate='process-head']", start: "top 80%" }
+  const pref = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!pref) {
+    gsap.from("[data-anim='proc-head']", {
+      opacity: 0, x: 30, duration: 0.85, ease: "power3.out",
+      scrollTrigger: { trigger: "[data-anim='proc-head']", start: "top 80%" }
     });
-    gsap.from("[data-animate='process-steps'] .process-step", {
-      opacity: 0, y: 30, stagger: 0.1, duration: 0.6, ease: "power3.out",
-      scrollTrigger: { trigger: "[data-animate='process-steps']", start: "top 80%" }
+    gsap.from(".proc-step", {
+      opacity: 0, x: -20, stagger: 0.12, duration: 0.65, ease: "power3.out",
+      scrollTrigger: { trigger: "[data-anim='proc-steps']", start: "top 80%" }
     });
-    gsap.from("[data-animate='process-cta']", {
+    gsap.from("[data-anim='proc-cta']", {
       opacity: 0, y: 20, duration: 0.6, ease: "power3.out",
-      scrollTrigger: { trigger: "[data-animate='process-cta']", start: "top 85%" }
+      scrollTrigger: { trigger: "[data-anim='proc-cta']", start: "top 88%" }
     });
   }
 </script>
