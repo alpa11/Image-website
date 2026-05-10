@@ -1,29 +1,30 @@
-/* ─── Google Fonts ─── */
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
 
 @import "tailwindcss";
 
-/* ─── Design Tokens ─── */
+/* Design Tokens */
 @theme {
-  --color-brand-cyan: #00AFC6;
-  --color-brand-blue: #0B7FD3;
-  --color-brand-dark: #0B2545;
-  --color-brand-light: #F7FBFC;
-  --color-system-maintenance: #E8843A;
-  --color-system-procurement: #2E9E6B;
-  --color-system-salary: #4A6FD4;
-  --color-system-tasks: #7C5CBF;
+  --color-bg: #F5F8FC;
   --color-surface: #FFFFFF;
-  --color-surface-alt: #F4F6F8;
-  --color-border: #E2E8F0;
-  --color-text-primary: #0B2545;
-  --color-text-secondary: #4A5568;
-  --color-text-muted: #718096;
-  --font-family-sans: 'Rubik', 'Arial Hebrew', sans-serif;
+  --color-text: #0D1420;
+  --color-text-2: #44546A;
+  --color-text-3: #8EA3BB;
+  --color-blue: oklch(50% 0.17 224);
+  --color-blue-d: oklch(42% 0.17 224);
+  --color-blue-l: oklch(65% 0.14 220);
+  --color-border: oklch(88% 0.025 224);
+  --color-border-l: oklch(93% 0.015 224);
+  --color-s1: oklch(50% 0.17 232);
+  --color-s2: oklch(53% 0.15 218);
+  --color-s3: oklch(57% 0.13 207);
+  --color-s4: oklch(55% 0.14 196);
+  --font-family-sans: 'Heebo', 'Arial Hebrew', sans-serif;
+  --nav-height: 68px;
 }
 
-/* ─── Base ─── */
-*, *::before, *::after { box-sizing: border-box; }
+/* Base */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
   direction: rtl;
@@ -31,64 +32,96 @@ html {
 }
 
 body {
-  font-family: 'Rubik', 'Arial Hebrew', sans-serif;
-  color: #0B2545;
-  background-color: #F7FBFC;
+  font-family: 'Heebo', 'Arial Hebrew', sans-serif;
+  color: #0D1420;
+  background-color: #F5F8FC;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-/* ─── Buttons ─── */
+/* Shared layout utils */
+.wrap {
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 3rem;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: oklch(50% 0.17 224);
+  margin-bottom: 12px;
+}
+
+.h2 {
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+
+.sub {
+  font-size: 17px;
+  color: #44546A;
+  line-height: 1.75;
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Buttons */
 .btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.875rem 2rem;
-  background: linear-gradient(135deg, #00AFC6 0%, #0B7FD3 100%);
+  gap: 8px;
+  padding: 13px 28px;
+  background: oklch(50% 0.17 224);
   color: white;
-  font-family: inherit;
+  font-family: 'Heebo', sans-serif;
   font-weight: 700;
-  font-size: 0.95rem;
-  border-radius: 0.5rem;
+  font-size: 15px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: all 0.25s;
   text-decoration: none;
   white-space: nowrap;
-  box-shadow: 0 4px 16px rgba(0,175,198,0.25);
 }
+
 .btn-primary:hover {
-  box-shadow: 0 8px 28px rgba(0,175,198,0.38);
-  transform: translateY(-1px);
-}
-.btn-primary:active {
-  transform: translateY(0);
+  background: oklch(42% 0.17 224);
+  transform: translateY(-2px);
 }
 
 .btn-secondary {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.875rem 2rem;
+  gap: 8px;
+  padding: 13px 28px;
   background: transparent;
-  color: #0B2545;
-  font-family: inherit;
-  font-weight: 600;
-  font-size: 0.95rem;
-  border-radius: 0.5rem;
-  border: 1.5px solid #E2E8F0;
+  color: #0D1420;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1.5px solid oklch(88% 0.025 224);
   cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: all 0.25s;
   text-decoration: none;
   white-space: nowrap;
 }
+
 .btn-secondary:hover {
-  border-color: #00AFC6;
-  background: rgba(0,175,198,0.05);
+  border-color: oklch(50% 0.17 224);
+  color: oklch(50% 0.17 224);
 }
 
-/* ─── Container ─── */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -96,73 +129,27 @@ body {
   padding-inline: 1.5rem;
 }
 
-/* ─── Cards ─── */
-.card {
-  background: #FFFFFF;
-  border-radius: 1rem;
-  box-shadow: 0 4px 24px 0 rgba(11,37,69,0.08);
-  border: 1px solid #E2E8F0;
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
-}
-.card:hover {
-  box-shadow: 0 12px 40px 0 rgba(11,37,69,0.13);
-  transform: translateY(-3px);
-}
-
-/* ─── Gradient text ─── */
-.gradient-text {
-  background: linear-gradient(135deg, #00AFC6 0%, #0B7FD3 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ─── Accent line ─── */
-.accent-line {
-  width: 48px;
-  height: 3px;
-  background: linear-gradient(90deg, #00AFC6, #0B7FD3);
-  border-radius: 9999px;
-}
-
-/* ─── Section titles ─── */
-.section-title {
-  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
-  font-weight: 900;
-  color: #0B2545;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
-}
-.section-subtitle {
-  font-size: 1.05rem;
-  color: #4A5568;
-  line-height: 1.75;
-}
-
-/* ─── Reduced motion ─── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+
+  .fade-up {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
-/* ─── Scrollbar ─── */
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #F7FBFC; }
-::-webkit-scrollbar-thumb { background: #00AFC6; border-radius: 9999px; }
+::-webkit-scrollbar-track { background: #F5F8FC; }
+::-webkit-scrollbar-thumb { background: oklch(50% 0.17 224); border-radius: 9999px; }
 
-/* ─── Selection ─── */
 ::selection {
-  background: rgba(0,175,198,0.18);
-  color: #0B2545;
+  background: oklch(50% 0.17 224 / 0.18);
+  color: #0D1420;
 }
 
-/* ─── Eyebrow dots (shared) ─── */
-.eyebrow-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #00AFC6;
-  flex-shrink: 0;
+@media (max-width: 900px) {
+  .wrap { padding-inline: 1.25rem; }
 }

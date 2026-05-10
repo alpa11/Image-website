@@ -4,43 +4,31 @@ const content = getSiteContent();
 ---
 
 <header id="navbar" class="navbar-wrapper">
-  <div class="container navbar-inner">
-    <!-- Logo -->
+  <div class="navbar-inner">
     <a href="/" class="navbar-logo" aria-label="SHC - דף הבית">
-      <img src={content.brand.logoPath} alt="SHC לוגו" width="100" height="44" />
+      <img src={content.brand.logoPath} alt="SHC לוגו" width="100" height="38" />
     </a>
 
-    <!-- Desktop nav -->
     <nav class="navbar-links" aria-label="ניווט ראשי">
-      <a href="/" class="nav-link">בית</a>
       <a href="#systems" class="nav-link">מערכות</a>
-      <a href="#process" class="nav-link">תהליך עבודה</a>
-      <a href="#contact" class="nav-link">יצירת קשר</a>
+      <a href="#process" class="nav-link">תהליך</a>
+      <a href="#portfolio" class="nav-link">עבודות</a>
+      <a href="#contact" class="nav-link">צור קשר</a>
     </nav>
 
-    <!-- CTA -->
-    <div class="navbar-cta">
-      <a href="#contact" class="btn-primary navbar-btn">
-        לתיאום שיחת אפיון
-      </a>
-    </div>
+    <a href="#contact" class="btn-primary navbar-btn">דבר איתנו</a>
 
-    <!-- Mobile hamburger -->
     <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="פתח תפריט" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </button>
   </div>
 
-  <!-- Mobile menu -->
   <div id="mobile-menu" class="mobile-menu" hidden>
     <nav class="mobile-nav" aria-label="ניווט נייד">
-      <a href="/" class="mobile-nav-link">בית</a>
       <a href="#systems" class="mobile-nav-link">מערכות</a>
-      <a href="#process" class="mobile-nav-link">תהליך עבודה</a>
-      <a href="#contact" class="mobile-nav-link">יצירת קשר</a>
-      <a href="#contact" class="btn-primary mobile-cta">לתיאום שיחת אפיון</a>
+      <a href="#process" class="mobile-nav-link">תהליך</a>
+      <a href="#portfolio" class="mobile-nav-link">עבודות</a>
+      <a href="#contact" class="mobile-nav-link">צור קשר</a>
     </nav>
   </div>
 </header>
@@ -52,22 +40,26 @@ const content = getSiteContent();
     right: 0;
     left: 0;
     z-index: 100;
-    background: rgba(247, 251, 252, 0.92);
+    height: 68px;
+    background: rgba(245,248,252,0.92);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid oklch(93% 0.015 224);
+    transition: box-shadow 0.3s;
   }
 
   .navbar-wrapper.scrolled {
-    border-bottom-color: #E2E8F0;
-    box-shadow: 0 2px 20px rgba(11, 37, 69, 0.06);
+    box-shadow: 0 2px 20px oklch(50% 0.17 224 / 0.08);
   }
 
   .navbar-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 72px;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 3rem;
+    height: 100%;
     gap: 2rem;
   }
 
@@ -78,98 +70,80 @@ const content = getSiteContent();
   }
 
   .navbar-logo img {
-    height: 44px;
+    height: 38px;
     width: auto;
   }
 
   .navbar-links {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 32px;
   }
 
   .nav-link {
-    padding: 0.5rem 0.875rem;
-    font-size: 0.9rem;
+    font-size: 15px;
     font-weight: 500;
-    color: #4A5568;
+    color: #44546A;
     text-decoration: none;
-    border-radius: 0.375rem;
-    transition: color 0.15s ease, background 0.15s ease;
+    transition: color 0.2s;
   }
 
   .nav-link:hover {
-    color: #0B2545;
-    background: rgba(0, 175, 198, 0.07);
+    color: oklch(50% 0.17 224);
   }
 
   .navbar-btn {
-    padding: 0.625rem 1.25rem;
-    font-size: 0.875rem;
+    padding: 10px 22px !important;
+    font-size: 14px !important;
   }
 
   .mobile-menu-btn {
     display: none;
     flex-direction: column;
-    justify-content: space-between;
-    width: 24px;
-    height: 18px;
+    gap: 5px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    padding: 4px;
   }
 
   .mobile-menu-btn span {
     display: block;
-    width: 100%;
+    width: 22px;
     height: 2px;
-    background: #0B2545;
+    background: #0D1420;
     border-radius: 2px;
-    transition: transform 0.25s ease, opacity 0.25s ease;
+    transition: all 0.3s;
   }
 
   .mobile-menu {
-    background: #FFFFFF;
-    border-top: 1px solid #E2E8F0;
-    padding: 1.5rem;
+    background: rgba(245,248,252,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid oklch(93% 0.015 224);
+    padding: 20px 24px 28px;
   }
 
   .mobile-nav {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 4px;
   }
 
   .mobile-nav-link {
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
+    font-size: 17px;
     font-weight: 500;
-    color: #0B2545;
+    color: #0D1420;
     text-decoration: none;
-    border-radius: 0.5rem;
-    transition: background 0.15s ease;
+    padding: 10px 0;
+    border-bottom: 1px solid oklch(93% 0.015 224);
+    display: block;
   }
 
-  .mobile-nav-link:hover {
-    background: rgba(0, 175, 198, 0.07);
-  }
-
-  .mobile-cta {
-    margin-top: 0.5rem;
-    text-align: center;
-    justify-content: center;
-  }
-
-  @media (max-width: 768px) {
-    .navbar-links,
-    .navbar-cta {
-      display: none;
-    }
-
-    .mobile-menu-btn {
-      display: flex;
-    }
+  @media (max-width: 900px) {
+    .navbar-inner { padding-inline: 1.25rem; }
+    .navbar-links { display: none; }
+    .navbar-btn { display: none !important; }
+    .mobile-menu-btn { display: flex; }
   }
 </style>
 
@@ -178,24 +152,18 @@ const content = getSiteContent();
   const btn = document.getElementById("mobile-menu-btn");
   const menu = document.getElementById("mobile-menu");
 
-  // Scroll effect
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 20) {
-      navbar?.classList.add("scrolled");
-    } else {
-      navbar?.classList.remove("scrolled");
-    }
+    if (window.scrollY > 20) navbar?.classList.add("scrolled");
+    else navbar?.classList.remove("scrolled");
   });
 
-  // Mobile toggle
   btn?.addEventListener("click", () => {
     const isOpen = menu && !menu.hidden;
     if (menu) menu.hidden = isOpen ?? true;
     btn.setAttribute("aria-expanded", String(!isOpen));
   });
 
-  // Close mobile menu on link click
-  menu?.querySelectorAll("a").forEach((link) => {
+  menu?.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", () => {
       if (menu) menu.hidden = true;
       btn?.setAttribute("aria-expanded", "false");

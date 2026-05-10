@@ -1,166 +1,83 @@
 ---
-import { getSiteContent, getSystems } from "../../data/dataLayer";
+import { getSiteContent } from "../../data/dataLayer";
 const content = getSiteContent();
-const systems = getSystems();
+const year = new Date().getFullYear();
 ---
 
-<footer class="footer">
-  <div class="container footer-inner">
-    <!-- Brand col -->
+<footer class="site-footer">
+  <div class="footer-inner">
     <div class="footer-brand">
-      <a href="/" class="footer-logo-link" aria-label="SHC">
-        <img src={content.brand.logoPath} alt="SHC לוגו" width="90" height="40" />
-      </a>
-      <p class="footer-tagline">{content.footer.tagline}</p>
-      <div class="accent-line" style="margin-top:1.25rem;"></div>
+      <img src={content.brand.logoPath} alt="SHC" />
+      <span class="footer-copy">© {year} SHC · מערכות לארגונים ומוסדות</span>
     </div>
 
-    <!-- Nav col -->
-    <div class="footer-col">
-      <h3 class="footer-col-title">ניווט</h3>
-      <nav>
-        {content.footer.links.map((link) => (
-          <a href={link.href} class="footer-link">{link.label}</a>
-        ))}
-      </nav>
-    </div>
-
-    <!-- Systems col -->
-    <div class="footer-col">
-      <h3 class="footer-col-title">מערכות</h3>
-      <nav>
-        {systems.map((sys) => (
-          <a href={`#systems`} class="footer-link">
-            {sys.name}
-          </a>
-        ))}
-      </nav>
-    </div>
-
-    <!-- Contact col -->
-    <div class="footer-col">
-      <h3 class="footer-col-title">יצירת קשר</h3>
-      {content.contact.email && (
-        <a href={`mailto:${content.contact.email}`} class="footer-link">{content.contact.email}</a>
-      )}
-      {content.contact.phone && (
-        <a href={`tel:${content.contact.phone}`} class="footer-link" dir="ltr">{content.contact.phone}</a>
-      )}
-      {!content.contact.email && !content.contact.phone && (
-        <p class="footer-placeholder">פרטי יצירת קשר יוגדרו בהמשך</p>
-      )}
-      <a href="#contact" class="btn-primary footer-cta">שיחת אפיון</a>
-    </div>
-  </div>
-
-  <!-- Bottom bar -->
-  <div class="footer-bottom">
-    <div class="container">
-      <p class="footer-copy">{content.footer.copyright}</p>
-    </div>
+    <nav class="footer-links">
+      <a href="#systems">מערכות</a>
+      <a href="#process">תהליך</a>
+      <a href="#portfolio">עבודות</a>
+      <a href="#contact">צור קשר</a>
+    </nav>
   </div>
 </footer>
 
 <style>
-  .footer {
-    background: #0B2545;
-    color: #CBD5E0;
-    margin-top: 0;
+  .site-footer {
+    background: #0D1420;
+    border-top: 1px solid oklch(22% 0.03 224);
+    padding: 28px 48px;
   }
 
   .footer-inner {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
-    gap: 3rem;
-    padding-block: 4rem;
-  }
-
-  .footer-logo-link {
-    display: inline-block;
-    margin-bottom: 1rem;
-    /* Invert logo to white on dark bg */
-    filter: brightness(0) invert(1);
-    opacity: 0.9;
-  }
-
-  .footer-tagline {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #94A3B8;
-    max-width: 28ch;
-  }
-
-  .footer-col-title {
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #00AFC6;
-    margin-bottom: 1rem;
-  }
-
-  .footer-col nav {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin-inline: auto;
   }
 
-  .footer-link {
-    font-size: 0.9rem;
-    color: #94A3B8;
-    text-decoration: none;
-    transition: color 0.15s ease;
-    display: block;
-    padding-block: 0.125rem;
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
-  .footer-link:hover {
-    color: #FFFFFF;
-  }
-
-  .footer-placeholder {
-    font-size: 0.85rem;
-    color: #64748B;
-    font-style: italic;
-    margin-bottom: 1rem;
-  }
-
-  .footer-cta {
-    margin-top: 1.25rem;
-    font-size: 0.875rem;
-    padding: 0.625rem 1.25rem;
-  }
-
-  .footer-bottom {
-    border-top: 1px solid rgba(255,255,255,0.08);
-    padding-block: 1.25rem;
+  .footer-brand img {
+    height: 28px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.5;
   }
 
   .footer-copy {
-    font-size: 0.8rem;
-    color: #64748B;
-    text-align: center;
+    font-size: 13px;
+    color: oklch(45% 0.04 224);
   }
 
-  /* Dark bg accent line override */
-  .footer .accent-line {
-    background: linear-gradient(90deg, #00AFC6, #0B7FD3);
-    opacity: 0.6;
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: oklch(52% 0.05 224);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover {
+    color: oklch(65% 0.14 220);
   }
 
   @media (max-width: 900px) {
-    .footer-inner {
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+    .site-footer {
+      padding: 24px 20px;
     }
-    .footer-brand {
-      grid-column: 1 / -1;
-    }
-  }
 
-  @media (max-width: 540px) {
     .footer-inner {
-      grid-template-columns: 1fr;
+      flex-direction: column;
+      gap: 14px;
+      text-align: center;
     }
   }
 </style>

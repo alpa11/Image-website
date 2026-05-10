@@ -1,263 +1,128 @@
 ---
-import { getSiteContent } from "../../data/dataLayer";
-const { process } = getSiteContent();
+const steps = [
+  { n: 1, title: 'שיחת אפיון', desc: 'מבינים לפני שבונים' },
+  { n: 2, title: 'מיפוי תהליכים', desc: 'כל workflow קיים' },
+  { n: 3, title: 'זיהוי כאבים', desc: 'הבעיה המדויקת' },
+  { n: 4, title: 'UX/UI', desc: 'ממשק למשתמשים' },
+  { n: 5, title: 'אב טיפוס', desc: 'Figma interactive' },
+  { n: 6, title: 'פיתוח', desc: 'Stack מוסדי, RTL' },
+  { n: 7, title: 'בדיקות', desc: 'QA מלא' },
+  { n: 8, title: 'הטמעה', desc: 'העלאה + הדרכה' },
+  { n: 9, title: 'ליווי', desc: 'לא נעלמים' },
+];
+
+const stepsMobile = [
+  { n: 1, title: 'שיחת אפיון', desc: 'מבינים את הארגון לפני שפותחים Figma.' },
+  { n: 2, title: 'מיפוי תהליכים', desc: 'מתעדים כל workflow קיים.' },
+  { n: 3, title: 'זיהוי כאבים', desc: 'מגדירים בעיות בצורה מדויקת.' },
+  { n: 4, title: 'UX/UI Design', desc: 'ממשק שמתאים למשתמשים האמיתיים.' },
+  { n: 5, title: 'אב טיפוס', desc: 'Figma interactive לפני שורת קוד.' },
+  { n: 6, title: 'פיתוח', desc: 'Stack מוסדי, RTL מלא, אבטחה.' },
+  { n: 7, title: 'בדיקות', desc: 'QA פונקציונלי, עיצובי ו-UX.' },
+  { n: 8, title: 'הטמעה', desc: 'העלאה לאוויר + הדרכה לצוות.' },
+  { n: 9, title: 'ליווי ושיפור', desc: 'לא נעלמים אחרי ההשקה.' },
+];
 ---
 
-<section id="process" class="proc-section">
-  <div class="proc-watermark" aria-hidden="true">04</div>
-
-  <div class="container proc-inner">
-    <!-- Header -->
-    <div class="proc-header" data-anim="proc-head">
-      <div class="proc-eyebrow">
-        <div class="eyebrow-dot" />
-        <span>תהליך עבודה</span>
-      </div>
-      <h2 class="proc-title">{process.title}</h2>
-      <p class="proc-subtitle">{process.subtitle}</p>
+<section class="process-section" id="process">
+  <div class="wrap">
+    <div class="fade-up" style="text-align:center">
+      <div class="eyebrow">תהליך העבודה</div>
+      <h2 class="h2">לא מוכרים תוכנה — מלווים תהליך</h2>
+      <p class="sub" style="margin:12px auto 0;max-width:520px">כל פרויקט מתחיל בהבנה ומסתיים בהטמעה שעובדת.</p>
     </div>
 
-    <!-- Steps vertical timeline (desktop) -->
-    <div class="proc-steps" data-anim="proc-steps">
-      {process.steps.map((step, i) => (
-        <div class="proc-step">
-          <!-- Step number + line -->
-          <div class="proc-step-left">
-            <div class="proc-num-ring">
-              <span class="proc-num">{step.number}</span>
-            </div>
-            {i < process.steps.length - 1 && (
-              <div class="proc-connector" aria-hidden="true" />
-            )}
-          </div>
-
-          <!-- Content -->
-          <div class="proc-step-content">
-            <h3 class="proc-step-title">{step.title}</h3>
-            <p class="proc-step-body">{step.body}</p>
+    <div class="ptl fade-up" id="ptl">
+      <div class="pl"><div class="plf" id="plf"></div></div>
+      {steps.map((s, i) => (
+        <div class={`pstep${i === 0 ? ' on' : ''}`} data-index={i}>
+          <div class="pnum">{s.n}</div>
+          <div>
+            <div class="ptit">{s.title}</div>
+            <div class="pdesc">{s.desc}</div>
           </div>
         </div>
       ))}
     </div>
 
-    <!-- CTA -->
-    <div class="proc-cta" data-anim="proc-cta">
-      <div class="proc-cta-inner">
-        <p class="proc-cta-text">
-          לא מתחילים לכתוב קוד לפני שמבינים את התהליך שלכם.
-        </p>
-        <a href="#contact" class="btn-primary">לשיחת אפיון ראשונית</a>
-      </div>
+    <div class="pm-list">
+      {stepsMobile.map(s => (
+        <div class="pm-step">
+          <div class="pm-num">{s.n}</div>
+          <div>
+            <div class="pm-tit">{s.title}</div>
+            <div class="pm-desc">{s.desc}</div>
+          </div>
+        </div>
+      ))}
     </div>
   </div>
 </section>
 
 <style>
-  .proc-section {
-    padding-block: 6rem;
-    background: #F7FBFC;
-    position: relative;
-    overflow: hidden;
+  .process-section {
+    padding: 96px 0;
+    background: #fff;
+    border-top: 1px solid oklch(88% 0.025 224);
   }
 
-  .proc-watermark {
-    position: absolute;
-    top: -1rem;
-    right: -1rem;
-    font-size: clamp(8rem, 20vw, 16rem);
-    font-weight: 900;
-    color: rgba(11,37,69,0.03);
-    line-height: 1;
-    pointer-events: none;
-    user-select: none;
-    letter-spacing: -0.05em;
-  }
-
-  .proc-inner {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 5rem;
-    align-items: start;
-  }
-
-  /* Header */
-  .proc-header {
-    position: sticky;
-    top: 5rem;
-  }
-
-  .proc-eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    margin-bottom: 1.25rem;
-  }
-  .eyebrow-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: #00AFC6;
-    flex-shrink: 0;
-  }
-  .proc-eyebrow span {
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #00AFC6;
-  }
-
-  .proc-title {
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-    font-weight: 900;
-    color: #0B2545;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-  }
-
-  .proc-subtitle {
-    font-size: 1rem;
-    color: #4A5568;
-    line-height: 1.75;
-  }
-
-  /* Steps */
-  .proc-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .proc-step {
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 0 1.5rem;
-  }
-
-  .proc-step-left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .proc-num-ring {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    border: 2px solid #00AFC6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #FFFFFF;
-    box-shadow: 0 0 0 5px rgba(0,175,198,0.08);
-    flex-shrink: 0;
-    transition: background 0.2s ease;
-    position: relative;
-    z-index: 1;
-  }
-
-  .proc-step:hover .proc-num-ring {
-    background: #00AFC6;
-  }
-  .proc-step:hover .proc-num {
-    color: #FFFFFF;
-  }
-
-  .proc-num {
-    font-size: 0.75rem;
-    font-weight: 800;
-    color: #00AFC6;
-    transition: color 0.2s ease;
-  }
-
-  .proc-connector {
-    width: 2px;
-    flex: 1;
-    min-height: 3rem;
-    background: linear-gradient(to bottom, #00AFC6, rgba(0,175,198,0.1));
-    margin-block: 0;
-    border-radius: 9999px;
-  }
-
-  .proc-step-content {
-    padding-bottom: 2.5rem;
-    padding-top: 0.75rem;
-  }
-
-  .proc-step-title {
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: #0B2545;
-    margin-bottom: 0.5rem;
-    line-height: 1.2;
-  }
-
-  .proc-step-body {
-    font-size: 0.9rem;
-    color: #4A5568;
-    line-height: 1.7;
-  }
-
-  /* CTA */
-  .proc-cta {
-    grid-column: 1 / -1;
-    margin-top: 1rem;
-  }
-
-  .proc-cta-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    padding: 1.75rem 2rem;
-    background: #0B2545;
-    border-radius: 1rem;
-    border: 1px solid rgba(0,175,198,0.2);
-  }
-
-  .proc-cta-text {
-    font-size: 1rem;
-    color: rgba(255,255,255,0.75);
-    font-weight: 500;
-    line-height: 1.5;
-    max-width: 50ch;
-  }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: oklch(50% 0.17 224); margin-bottom: 12px; }
+  .h2 { font-size: clamp(28px,3.5vw,44px); font-weight: 800; letter-spacing: -.5px; line-height: 1.15; }
+  .sub { font-size: 17px; color: #44546A; line-height: 1.75; }
+  .fade-up { opacity: 0; transform: translateY(30px); }
+  .ptl { position: relative; display: flex; gap: 0; margin-top: 60px; }
+  .pl { position: absolute; top: 23px; right: 24px; left: 24px; height: 2px; background: oklch(93% 0.015 224); z-index: 0; }
+  .plf { height: 100%; width: 0; background: oklch(50% 0.17 224); border-radius: 2px; transition: width 1.2s; }
+  .pstep { flex: 1; min-width: 90px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 1; padding: 0 6px; }
+  .pnum { width: 46px; height: 46px; border-radius: 50%; background: #fff; border: 2px solid oklch(88% 0.025 224); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; color: #8EA3BB; margin-bottom: 10px; flex-shrink: 0; transition: all .35s; }
+  .pstep.on .pnum { background: oklch(50% 0.17 224); border-color: oklch(50% 0.17 224); color: #fff; }
+  .ptit { font-size: 12px; font-weight: 700; color: #0D1420; margin-bottom: 3px; }
+  .pdesc { font-size: 11px; color: #44546A; display: none; }
+  .pstep.on .pdesc { display: block; }
+  .pm-list { display: none; flex-direction: column; margin-top: 40px; }
+  .pm-step { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid oklch(93% 0.015 224); align-items: flex-start; }
+  .pm-step:last-child { border-bottom: none; }
+  .pm-num { width: 40px; height: 40px; border-radius: 50%; background: #0D1420; color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .pm-tit { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+  .pm-desc { font-size: 13px; color: #44546A; }
 
   @media (max-width: 900px) {
-    .proc-inner { grid-template-columns: 1fr; gap: 3rem; }
-    .proc-header { position: static; }
-    .proc-cta { grid-column: 1; }
-    .proc-cta-inner { flex-direction: column; align-items: flex-start; }
-    .proc-watermark { font-size: 8rem; }
-  }
-
-  @media (max-width: 540px) {
-    .proc-step { grid-template-columns: 48px 1fr; gap: 0 1rem; }
-    .proc-num-ring { width: 44px; height: 44px; }
-    .proc-cta-inner { padding: 1.25rem; }
+    .ptl { display: none; }
+    .pm-list { display: flex; }
   }
 </style>
 
 <script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
-  const pref = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!pref) {
-    gsap.from("[data-anim='proc-head']", {
-      opacity: 0, x: 30, duration: 0.85, ease: "power3.out",
-      scrollTrigger: { trigger: "[data-anim='proc-head']", start: "top 80%" }
+  document.querySelectorAll('.pstep').forEach((s, i) => {
+    s.addEventListener('mouseenter', () => {
+      document.querySelectorAll('.pstep').forEach(p => p.classList.remove('on'));
+      s.classList.add('on');
+      const f = document.getElementById('plf');
+      if (f) f.style.width = ((i + 1) / 9 * 100) + '%';
     });
-    gsap.from(".proc-step", {
-      opacity: 0, x: -20, stagger: 0.12, duration: 0.65, ease: "power3.out",
-      scrollTrigger: { trigger: "[data-anim='proc-steps']", start: "top 80%" }
+  });
+
+  ScrollTrigger.create({
+    trigger: '#ptl',
+    start: 'top 72%',
+    once: true,
+    onEnter: () => {
+      const f = document.getElementById('plf');
+      if (f) gsap.to(f, { width: '100%', duration: 1.4, ease: 'power2.out', delay: 0.3 });
+    },
+  });
+
+  gsap.utils.toArray('.fade-up').forEach((el) => {
+    gsap.to(el, {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 87%', once: true },
     });
-    gsap.from("[data-anim='proc-cta']", {
-      opacity: 0, y: 20, duration: 0.6, ease: "power3.out",
-      scrollTrigger: { trigger: "[data-anim='proc-cta']", start: "top 88%" }
-    });
-  }
+  });
 </script>

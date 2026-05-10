@@ -9,8 +9,8 @@ interface Props {
 }
 
 const {
-  title = "SHC — מערכות ניהול למוסדות",
-  description = "SHC בונה מערכות ניהול מותאמות למוסדות חינוך, ארגונים ועמותות. מכאוס תפעולי למערכת מסודרת.",
+  title = "SHC — מערכות לארגונים ומוסדות",
+  description = "SHC בונה מערכות ניהול מותאמות אישית לארגונים ומוסדות — תחזוקה, רכש, שעות ומשימות.",
 } = Astro.props;
 ---
 
@@ -21,14 +21,14 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
-    <link rel="icon" type="image/svg+xml" href="/logo/shc-logo.svg" />
+    <link rel="icon" type="image/png" href="/logo/LOGOSHC.PNG" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
   </head>
   <body>
     <Navbar />
-    <main style="padding-top: 72px;">
+    <main>
       <slot />
     </main>
     <Footer />

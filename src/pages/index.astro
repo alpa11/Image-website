@@ -2,22 +2,19 @@
 import BaseLayout from "../components/layout/BaseLayout.astro";
 import Hero from "../components/home/Hero";
 import ChaosToOrder from "../components/home/ChaosToOrder";
-import SystemsGrid from "../components/home/SystemsGrid";
-import AboutSection from "../components/home/AboutSection.astro";
+import SystemsSection from "../components/home/SystemsSection";
 import ProcessSection from "../components/home/ProcessSection.astro";
 import PortfolioSection from "../components/home/PortfolioSection.astro";
 import ContactSection from "../components/home/ContactSection";
-import { getSiteContent, getSystems } from "../data/dataLayer";
+import { getSiteContent } from "../data/dataLayer";
 
 const content = getSiteContent();
-const systems = getSystems();
 ---
 
 <BaseLayout
-  title="SHC — מערכות ניהול שמכניסות סדר למוסדות"
-  description="SHC בונה מערכות ניהול מותאמות למוסדות חינוך, ארגונים ועמותות. מכאוס תפעולי למערכת מסודרת."
+  title={content.meta?.title ?? "SHC — מערכות לארגונים ומוסדות"}
+  description={content.meta?.description ?? "SHC בונה מערכות ניהול מותאמות אישית לארגונים ומוסדות."}
 >
-  <!-- 1. Hero -->
   <Hero
     client:load
     title={content.hero.title}
@@ -28,21 +25,9 @@ const systems = getSystems();
     ctaSecondaryUrl={content.hero.ctaSecondaryUrl}
   />
 
-  <!-- 2. Chaos → Order (Option A: scattered icons) -->
-  <ChaosToOrder client:visible />
-
-  <!-- 3. Systems Grid -->
-  <SystemsGrid client:visible systems={systems} />
-
-  <!-- 4. About -->
-  <AboutSection />
-
-  <!-- 5. Process -->
+  <ChaosToOrder client:load />
+  <SystemsSection client:load />
   <ProcessSection />
-
-  <!-- 6. Portfolio (placeholder) -->
   <PortfolioSection />
-
-  <!-- 7. Contact/CTA -->
-  <ContactSection client:visible />
+  <ContactSection client:load />
 </BaseLayout>

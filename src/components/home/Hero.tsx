@@ -1,781 +1,142 @@
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 
-gsap.registerPlugin(ScrollTrigger);
+const s1 = 'oklch(50% 0.17 232)';
+const s2 = 'oklch(53% 0.15 218)';
+const s3 = 'oklch(57% 0.13 207)';
+const s4 = 'oklch(55% 0.14 196)';
 
-interface HeroProps {
-  title: string;
-  subtitle: string;
-  ctaPrimary: string;
-  ctaSecondary: string;
-  ctaPrimaryUrl: string;
-  ctaSecondaryUrl: string;
-}
-
-// ─── Abstract Dashboard Mockup ────────────────────────────────
-function DashboardMockup() {
+function HeroPanels() {
   return (
-    <div className="db-frame">
-      {/* Window chrome */}
-      <div className="db-chrome">
-        <div className="db-dots">
-          <span style={{ background: "#FF5F57" }} />
-          <span style={{ background: "#FEBC2E" }} />
-          <span style={{ background: "#28C840" }} />
+    <div className="hero-panels" id="hero-panels">
+      <div className="hp" id="hp1">
+        <div className="hp-hd">
+          <div className="hp-dot" style={{ background: s1 }} />
+          <span className="hp-nm">תחזוקה</span>
         </div>
-        <div className="db-chrome-title">SHC · לוח בקרה</div>
-        <div className="db-chrome-actions">
-          <div className="db-icon-btn" />
-          <div className="db-icon-btn" />
-        </div>
+        <div className="hp-row"><span>מזגן קומה 3</span><span className="badge badge-yellow">פתוח</span></div>
+        <div className="hp-row"><span>דלת כניסה ראשית</span><span className="badge badge-blue">בטיפול</span></div>
+        <div className="hp-row"><span>חלון מעבדה ב׳</span><span className="badge badge-green">סגור</span></div>
       </div>
 
-      <div className="db-body">
-        {/* Sidebar */}
-        <nav className="db-sidebar">
-          {["ראשי", "קריאות", "רכש", "שעות", "משימות"].map((item, i) => (
-            <div key={item} className={`db-nav-item ${i === 0 ? "db-nav-item--active" : ""}`}>
-              <div className="db-nav-dot" />
-              <span>{item}</span>
-            </div>
-          ))}
-        </nav>
-
-        {/* Main content */}
-        <div className="db-main">
-          {/* Stats row */}
-          <div className="db-stats">
-            <div className="db-stat-card" style={{ "--c": "#E8843A" } as React.CSSProperties}>
-              <div className="db-stat-bar" />
-              <div className="db-stat-num">24</div>
-              <div className="db-stat-label">קריאות פתוחות</div>
-            </div>
-            <div className="db-stat-card" style={{ "--c": "#2E9E6B" } as React.CSSProperties}>
-              <div className="db-stat-bar" />
-              <div className="db-stat-num">₪ 84k</div>
-              <div className="db-stat-label">תקציב פעיל</div>
-            </div>
-            <div className="db-stat-card" style={{ "--c": "#4A6FD4" } as React.CSSProperties}>
-              <div className="db-stat-bar" />
-              <div className="db-stat-num">18/24</div>
-              <div className="db-stat-label">דיווחים הוגשו</div>
-            </div>
-          </div>
-
-          {/* Section header */}
-          <div className="db-section-hd">
-            <span className="db-section-title">קריאות אחרונות</span>
-            <span className="db-section-badge">24 פתוחות</span>
-          </div>
-
-          {/* Table rows */}
-          <div className="db-table">
-            {[
-              { id: "#2341", desc: "תקלת מזגן קומה 3", status: "בטיפול", color: "#F59E0B", user: "א" },
-              { id: "#2340", desc: "ברז נזילה — שירותים", status: "פתוח", color: "#EF4444", user: "מ" },
-              { id: "#2339", desc: "תאורה שבורה", status: "נסגר", color: "#10B981", user: "ד" },
-            ].map((row) => (
-              <div key={row.id} className="db-row">
-                <span className="db-row-id">{row.id}</span>
-                <span className="db-row-desc">{row.desc}</span>
-                <span className="db-row-status">
-                  <span className="db-status-dot" style={{ background: row.color }} />
-                  {row.status}
-                </span>
-                <span className="db-avatar" style={{ background: `${row.color}22`, color: row.color }}>
-                  {row.user}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* Progress bar */}
-          <div className="db-progress-wrap">
-            <div className="db-progress-label">
-              <span>השלמת דיווחי חודש ינואר</span>
-              <span className="db-progress-pct">75%</span>
-            </div>
-            <div className="db-progress-track">
-              <div className="db-progress-fill" style={{ width: "75%" }} />
-            </div>
-          </div>
+      <div className="hp" id="hp2">
+        <div className="hp-hd">
+          <div className="hp-dot" style={{ background: s2 }} />
+          <span className="hp-nm">רכש</span>
         </div>
+        <div className="hp-bar-bg"><div className="hp-bar" style={{ width: '68%', background: s2 }} /></div>
+        <div className="hp-label">₪68,400 / ₪100,000 · 68%</div>
+        <div className="hp-row"><span>בקשת רכש #42</span><span className="badge badge-yellow">ממתין</span></div>
       </div>
 
-      {/* Floating notification */}
-      <div className="db-notification">
-        <div className="db-notif-dot" />
-        <span>קריאה חדשה נפתחה · #2342</span>
+      <div className="hp" id="hp3">
+        <div className="hp-hd">
+          <div className="hp-dot" style={{ background: s3 }} />
+          <span className="hp-nm">דיווחי שעות</span>
+        </div>
+        <div className="hp-label">שבוע נוכחי</div>
+        <div className="hp-grid">
+          <div className="hp-cell" style={{ background: s3 }} />
+          <div className="hp-cell" style={{ background: s3 }} />
+          <div className="hp-cell" style={{ background: s3, opacity: 0.6 }} />
+          <div className="hp-cell" />
+          <div className="hp-cell" />
+        </div>
+        <div className="hp-label" style={{ marginTop: 4 }}>3/5 ימים דווחו</div>
+      </div>
+
+      <div className="hp" id="hp4">
+        <div className="hp-hd">
+          <div className="hp-dot" style={{ background: s4 }} />
+          <span className="hp-nm">משימות</span>
+        </div>
+        <div className="hp-row"><span>דוח רבעוני</span><span className="badge badge-yellow">מחר</span></div>
+        <div className="hp-row"><span>עדכון לוחות</span><span className="badge badge-blue">יום ה׳</span></div>
+        <div className="hp-row"><span>הצעת מחיר</span><span className="badge badge-green">הושלם</span></div>
       </div>
     </div>
   );
 }
 
-// ─── Hero ─────────────────────────────────────────────────────
+interface HeroProps {
+  title?: string;
+  subtitle?: string;
+  ctaPrimary?: string;
+  ctaPrimaryUrl?: string;
+  ctaSecondary?: string;
+  ctaSecondaryUrl?: string;
+}
+
 export default function Hero({
-  title,
-  subtitle,
-  ctaPrimary,
-  ctaSecondary,
-  ctaPrimaryUrl,
-  ctaSecondaryUrl,
+  title = 'תהליכים מבולגנים.<br><span style="color:oklch(50% 0.17 224)">מערכת שעובדת.</span>',
+  subtitle = 'SHC לוקחת את הכאוס הניהולי של המוסד שלכם ובונה ממנו תשתית דיגיטלית מדויקת — לכל מחלקה, לכל תפקיד, לכל תהליך.',
+  ctaPrimary = 'ראה את הטרנספורמציה ↓',
+  ctaPrimaryUrl = '#chaos',
+  ctaSecondary = 'דבר עם הצוות',
+  ctaSecondaryUrl = '#contact',
 }: HeroProps) {
   const heroRef = useRef<HTMLElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const mockupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      gsap.set('#hp1', { x: 60, y: -45, rotate: 5 });
+      gsap.set('#hp2', { x: -45, y: -60, rotate: -4 });
+      gsap.set('#hp3', { x: 55, y: 50, rotate: -3 });
+      gsap.set('#hp4', { x: -60, y: 42, rotate: 4 });
 
-      // Text: slide in from right (RTL — text is on the right)
-      tl.from(".hero-badge", { opacity: 0, y: -12, duration: 0.5 })
-        .from(".hero-title", { opacity: 0, y: 28, duration: 0.75 }, "-=0.25")
-        .from(".hero-sub", { opacity: 0, y: 18, duration: 0.6 }, "-=0.45")
-        .from(".hero-ctas", { opacity: 0, y: 14, duration: 0.5 }, "-=0.35")
-        .from(".hero-kpi", { opacity: 0, y: 10, stagger: 0.08, duration: 0.4 }, "-=0.3");
-
-      // Mockup: float in from the left with slight perspective
-      tl.from(mockupRef.current, {
-        opacity: 0,
-        x: -40,
-        rotateY: 8,
-        duration: 0.9,
-        ease: "power2.out",
-      }, 0.15);
-
-      // Mockup elements: staggered reveal
-      tl.from(".db-stat-card, .db-row, .db-progress-wrap", {
-        opacity: 0,
-        y: 8,
-        stagger: 0.06,
-        duration: 0.4,
-      }, 0.65);
-
-      // Notification popup
-      tl.from(".db-notification", {
-        opacity: 0,
-        y: 16,
-        scale: 0.9,
-        duration: 0.5,
-        ease: "back.out(1.5)",
-      }, 1.1);
-
-      // Subtle float of mockup on scroll
-      gsap.to(mockupRef.current, {
-        y: 60,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1.5,
-        },
-      });
+      gsap.timeline({ delay: 0.3 })
+        .to('.hero-fade', { opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out' })
+        .to(['#hp1', '#hp2'], { opacity: 1, x: 0, y: 0, rotate: 0, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+        .to(['#hp3', '#hp4'], { opacity: 1, x: 0, y: 0, rotate: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6');
     }, heroRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={heroRef} className="hero-root">
-      {/* Background elements */}
-      <div className="hero-bg" aria-hidden="true">
-        <div className="hero-bg-blob hero-bg-blob--1" />
-        <div className="hero-bg-blob hero-bg-blob--2" />
-        <svg className="hero-bg-grid" aria-hidden="true">
-          <defs>
-            <pattern id="hero-grid" width="48" height="48" patternUnits="userSpaceOnUse">
-              <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(0,175,198,0.06)" strokeWidth="1"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#hero-grid)"/>
-        </svg>
-      </div>
-
-      <div className="hero-container">
-        {/* ── Text side ── */}
-        <div ref={textRef} className="hero-text">
-          {/* Badge */}
-          <div className="hero-badge">
-            <span className="hero-badge-pulse" />
-            מערכות ניהול למוסדות חינוך ועמותות
-          </div>
-
-          {/* Title */}
-          <h1 className="hero-title">
-            מכאוס תפעולי
-            <br />
-            <span className="hero-title-accent">למערכת מסודרת</span>
-          </h1>
-
-          {/* Subtitle */}
-          <p className="hero-sub">{subtitle}</p>
-
-          {/* CTAs */}
-          <div className="hero-ctas">
-            <a href={ctaPrimaryUrl} className="btn-primary hero-btn-primary">
-              {ctaPrimary}
-              <svg viewBox="0 0 16 16" fill="none" width="15" height="15" aria-hidden="true">
-                <path d="M11 8H5M8 5l-3 3 3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-            </a>
-            <a href={ctaSecondaryUrl} className="hero-btn-ghost">
-              {ctaSecondary}
-            </a>
-          </div>
-
-          {/* KPIs */}
-          <div className="hero-kpis">
-            <div className="hero-kpi">
-              <strong>4</strong>
-              <span>מערכות פעילות</span>
-            </div>
-            <div className="hero-kpi-sep" />
-            <div className="hero-kpi">
-              <strong>100%</strong>
-              <span>מותאם אישית</span>
-            </div>
-            <div className="hero-kpi-sep" />
-            <div className="hero-kpi">
-              <strong>0</strong>
-              <span>אקסלים נדרשים</span>
-            </div>
+    <section className="hero-section" id="hero" ref={heroRef}>
+      <div className="hero-inner">
+        <div className="hero-text">
+          <div className="eyebrow hero-fade" style={{ opacity: 0, transform: 'translateY(30px)' }}>מערכות תוכנה לארגונים ומוסדות</div>
+          <h1 className="hero-title hero-fade" style={{ opacity: 0, transform: 'translateY(30px)' }} dangerouslySetInnerHTML={{ __html: title }} />
+          <p className="hero-sub hero-fade" style={{ opacity: 0, transform: 'translateY(30px)' }}>{subtitle}</p>
+          <div className="hero-ctas hero-fade" style={{ opacity: 0, transform: 'translateY(30px)' }}>
+            <a href={ctaPrimaryUrl} className="btn btn-primary">{ctaPrimary}</a>
+            <a href={ctaSecondaryUrl} className="btn btn-secondary">{ctaSecondary}</a>
           </div>
         </div>
-
-        {/* ── Mockup side ── */}
-        <div ref={mockupRef} className="hero-mockup-wrap" aria-hidden="true">
-          <DashboardMockup />
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="hero-scroll" aria-hidden="true">
-        <div className="hero-scroll-track">
-          <div className="hero-scroll-thumb" />
-        </div>
+        <HeroPanels />
       </div>
 
       <style>{`
-        /* ── Root ── */
-        .hero-root {
-          position: relative;
-          min-height: calc(100vh - 72px);
-          display: flex;
-          align-items: center;
-          overflow: hidden;
-          background: #F7FBFC;
-        }
-
-        /* ── Background ── */
-        .hero-bg {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          z-index: 0;
-          overflow: hidden;
-        }
-        .hero-bg-blob {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(80px);
-        }
-        .hero-bg-blob--1 {
-          width: 700px; height: 700px;
-          top: -300px; right: -150px;
-          background: radial-gradient(circle, rgba(0,175,198,0.13) 0%, transparent 65%);
-        }
-        .hero-bg-blob--2 {
-          width: 500px; height: 500px;
-          bottom: -200px; left: 20%;
-          background: radial-gradient(circle, rgba(11,127,211,0.09) 0%, transparent 65%);
-        }
-        .hero-bg-grid {
-          position: absolute;
-          inset: 0;
-          width: 100%; height: 100%;
-        }
-
-        /* ── Layout ── */
-        .hero-container {
-          position: relative;
-          z-index: 1;
-          width: 100%;
-          max-width: 1200px;
-          margin-inline: auto;
-          padding-inline: 1.5rem;
-          display: grid;
-          grid-template-columns: 1fr 1.1fr;
-          gap: 4rem;
-          align-items: center;
-          padding-block: 5rem;
-        }
-
-        /* ── Text ── */
-        .hero-text {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .hero-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.35rem 0.875rem;
-          background: rgba(0,175,198,0.1);
-          border: 1px solid rgba(0,175,198,0.22);
-          border-radius: 9999px;
-          font-size: 0.8rem;
-          font-weight: 600;
-          color: #0B7FD3;
-          margin-bottom: 1.75rem;
-        }
-
-        .hero-badge-pulse {
-          width: 7px; height: 7px;
-          border-radius: 50%;
-          background: #00AFC6;
-          flex-shrink: 0;
-          animation: heroPulse 2s infinite;
-        }
-
-        @keyframes heroPulse {
-          0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,175,198,0.4); }
-          50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(0,175,198,0); }
-        }
-
-        .hero-title {
-          font-size: clamp(2.4rem, 5.5vw, 4rem);
-          font-weight: 900;
-          line-height: 1.08;
-          letter-spacing: -0.03em;
-          color: #0B2545;
-          margin-bottom: 1.5rem;
-        }
-
-        .hero-title-accent {
-          background: linear-gradient(135deg, #00AFC6 0%, #0B7FD3 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        .hero-sub {
-          font-size: 1.05rem;
-          line-height: 1.8;
-          color: #4A5568;
-          max-width: 46ch;
-          margin-bottom: 2.25rem;
-        }
-
-        .hero-ctas {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          flex-wrap: wrap;
-          margin-bottom: 3rem;
-        }
-
-        .hero-btn-primary {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          flex-direction: row-reverse;
-          padding: 0.875rem 1.75rem;
-          background: linear-gradient(135deg, #00AFC6 0%, #0B7FD3 100%);
-          color: white;
-          font-weight: 700;
-          font-size: 0.95rem;
-          border-radius: 0.5rem;
-          text-decoration: none;
-          transition: box-shadow 0.2s ease, transform 0.2s ease;
-          box-shadow: 0 4px 20px rgba(0,175,198,0.3);
-        }
-        .hero-btn-primary:hover {
-          box-shadow: 0 8px 28px rgba(0,175,198,0.42);
-          transform: translateY(-1px);
-        }
-
-        .hero-btn-ghost {
-          display: inline-flex;
-          align-items: center;
-          padding: 0.875rem 1.5rem;
-          color: #4A5568;
-          font-weight: 600;
-          font-size: 0.95rem;
-          text-decoration: none;
-          border-radius: 0.5rem;
-          border: 1.5px solid #E2E8F0;
-          transition: border-color 0.2s, color 0.2s, background 0.2s;
-        }
-        .hero-btn-ghost:hover {
-          border-color: #00AFC6;
-          color: #0B2545;
-          background: rgba(0,175,198,0.05);
-        }
-
-        .hero-kpis {
-          display: flex;
-          align-items: center;
-          gap: 1.75rem;
-          padding-top: 1.75rem;
-          border-top: 1px solid #E2E8F0;
-        }
-
-        .hero-kpi {
-          display: flex;
-          flex-direction: column;
-          gap: 0.125rem;
-        }
-        .hero-kpi strong {
-          font-size: 1.6rem;
-          font-weight: 900;
-          color: #0B2545;
-          line-height: 1;
-          letter-spacing: -0.03em;
-        }
-        .hero-kpi span {
-          font-size: 0.75rem;
-          color: #718096;
-          font-weight: 500;
-        }
-
-        .hero-kpi-sep {
-          width: 1px;
-          height: 32px;
-          background: #E2E8F0;
-          flex-shrink: 0;
-        }
-
-        /* ── Mockup wrapper ── */
-        .hero-mockup-wrap {
-          perspective: 1200px;
-        }
-
-        /* ── Dashboard Frame ── */
-        .db-frame {
-          position: relative;
-          background: #FFFFFF;
-          border-radius: 14px;
-          box-shadow:
-            0 0 0 1px rgba(11,37,69,0.08),
-            0 24px 64px rgba(11,37,69,0.14),
-            0 4px 16px rgba(0,175,198,0.08);
-          overflow: hidden;
-          transform: rotate(-1deg) rotateY(-4deg) rotateX(2deg);
-          transform-style: preserve-3d;
-          transition: transform 0.4s ease;
-        }
-        .db-frame:hover {
-          transform: rotate(0deg) rotateY(0deg) rotateX(0deg);
-        }
-
-        /* Chrome bar */
-        .db-chrome {
-          height: 40px;
-          background: #0B2545;
-          display: flex;
-          align-items: center;
-          padding-inline: 1rem;
-          gap: 0.75rem;
-        }
-        .db-dots {
-          display: flex;
-          gap: 5px;
-        }
-        .db-dots span {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-        }
-        .db-chrome-title {
-          flex: 1;
-          text-align: center;
-          font-size: 0.7rem;
-          font-weight: 600;
-          color: rgba(255,255,255,0.4);
-          letter-spacing: 0.05em;
-        }
-        .db-chrome-actions {
-          display: flex;
-          gap: 6px;
-        }
-        .db-icon-btn {
-          width: 22px;
-          height: 22px;
-          border-radius: 4px;
-          background: rgba(255,255,255,0.08);
-        }
-
-        /* Body */
-        .db-body {
-          display: grid;
-          grid-template-columns: 100px 1fr;
-          min-height: 280px;
-        }
-
-        /* Sidebar */
-        .db-sidebar {
-          background: #F8FAFC;
-          border-left: 1px solid #E2E8F0;
-          padding: 1rem 0.5rem;
-          display: flex;
-          flex-direction: column;
-          gap: 0.25rem;
-        }
-        .db-nav-item {
-          display: flex;
-          align-items: center;
-          gap: 0.375rem;
-          padding: 0.4rem 0.5rem;
-          border-radius: 0.375rem;
-          font-size: 0.65rem;
-          font-weight: 500;
-          color: #718096;
-          cursor: default;
-        }
-        .db-nav-item--active {
-          background: rgba(0,175,198,0.1);
-          color: #0B7FD3;
-          font-weight: 700;
-        }
-        .db-nav-dot {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: currentColor;
-          opacity: 0.5;
-          flex-shrink: 0;
-        }
-        .db-nav-item--active .db-nav-dot {
-          opacity: 1;
-          background: #00AFC6;
-        }
-
-        /* Main content */
-        .db-main {
-          padding: 1rem;
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-
-        /* Stats */
-        .db-stats {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 0.5rem;
-        }
-        .db-stat-card {
-          background: #F7FBFC;
-          border: 1px solid #E2E8F0;
-          border-radius: 0.5rem;
-          overflow: hidden;
-          padding: 0.6rem;
-        }
-        .db-stat-bar {
-          height: 3px;
-          width: 100%;
-          background: var(--c, #00AFC6);
-          border-radius: 9999px;
-          margin-bottom: 0.5rem;
-        }
-        .db-stat-num {
-          font-size: 0.85rem;
-          font-weight: 800;
-          color: #0B2545;
-          line-height: 1;
-          margin-bottom: 0.2rem;
-        }
-        .db-stat-label {
-          font-size: 0.55rem;
-          color: #718096;
-          font-weight: 500;
-        }
-
-        /* Section header */
-        .db-section-hd {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-        .db-section-title {
-          font-size: 0.65rem;
-          font-weight: 700;
-          color: #0B2545;
-        }
-        .db-section-badge {
-          font-size: 0.55rem;
-          font-weight: 600;
-          background: rgba(239,68,68,0.1);
-          color: #DC2626;
-          padding: 0.1rem 0.4rem;
-          border-radius: 9999px;
-        }
-
-        /* Table */
-        .db-table {
-          display: flex;
-          flex-direction: column;
-          gap: 0.25rem;
-        }
-        .db-row {
-          display: grid;
-          grid-template-columns: 36px 1fr auto 22px;
-          align-items: center;
-          gap: 0.4rem;
-          padding: 0.35rem 0.5rem;
-          border-radius: 0.35rem;
-          font-size: 0.6rem;
-          background: #FAFBFC;
-          border: 1px solid transparent;
-          transition: border-color 0.15s;
-        }
-        .db-row:hover {
-          border-color: #E2E8F0;
-        }
-        .db-row-id {
-          color: #00AFC6;
-          font-weight: 700;
-          font-size: 0.58rem;
-        }
-        .db-row-desc {
-          color: #4A5568;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .db-row-status {
-          display: flex;
-          align-items: center;
-          gap: 0.3rem;
-          color: #4A5568;
-          white-space: nowrap;
-        }
-        .db-status-dot {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          flex-shrink: 0;
-        }
-        .db-avatar {
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 0.55rem;
-          font-weight: 700;
-        }
-
-        /* Progress */
-        .db-progress-wrap {
-          padding-top: 0.25rem;
-        }
-        .db-progress-label {
-          display: flex;
-          justify-content: space-between;
-          font-size: 0.58rem;
-          color: #718096;
-          margin-bottom: 0.3rem;
-          font-weight: 500;
-        }
-        .db-progress-pct {
-          color: #4A6FD4;
-          font-weight: 700;
-        }
-        .db-progress-track {
-          height: 5px;
-          background: #EEF2FF;
-          border-radius: 9999px;
-          overflow: hidden;
-        }
-        .db-progress-fill {
-          height: 100%;
-          background: linear-gradient(90deg, #4A6FD4, #7C5CBF);
-          border-radius: 9999px;
-        }
-
-        /* Floating notification */
-        .db-notification {
-          position: absolute;
-          bottom: -1px;
-          right: 12px;
-          background: #0B2545;
-          color: white;
-          font-size: 0.6rem;
-          font-weight: 600;
-          padding: 0.35rem 0.75rem;
-          border-radius: 9999px 9999px 0 0;
-          display: flex;
-          align-items: center;
-          gap: 0.375rem;
-          box-shadow: 0 -4px 16px rgba(11,37,69,0.2);
-        }
-        .db-notif-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #00AFC6;
-          animation: heroPulse 1.5s infinite;
-        }
-
-        /* Scroll hint */
-        .hero-scroll {
-          position: absolute;
-          bottom: 2rem;
-          left: 50%;
-          transform: translateX(-50%);
-        }
-        .hero-scroll-track {
-          width: 2px;
-          height: 44px;
-          background: #E2E8F0;
-          border-radius: 9999px;
-          overflow: hidden;
-        }
-        .hero-scroll-thumb {
-          width: 100%;
-          height: 50%;
-          background: #00AFC6;
-          border-radius: 9999px;
-          animation: scrollThumb 1.8s ease-in-out infinite;
-        }
-        @keyframes scrollThumb {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(200%); }
-        }
-
-        /* ── Responsive ── */
-        @media (max-width: 900px) {
-          .hero-container {
-            grid-template-columns: 1fr;
-            padding-block: 3rem;
-          }
-          .hero-mockup-wrap {
-            order: -1;
-          }
-          .db-frame {
-            transform: none;
-          }
-          .db-body {
-            grid-template-columns: 80px 1fr;
-          }
-        }
-        @media (max-width: 540px) {
-          .hero-sub { max-width: unset; }
-          .hero-kpis { gap: 1.25rem; }
-          .hero-kpi strong { font-size: 1.3rem; }
-          .db-sidebar { display: none; }
-          .db-body { grid-template-columns: 1fr; }
-        }
+        .hero-section { min-height: 100vh; padding-top: var(--nav-height, 68px); display: flex; align-items: center; background: #F5F8FC; background-image: radial-gradient(circle, oklch(50% 0.17 224 / 0.055) 1px, transparent 1px); background-size: 28px 28px; overflow: hidden; }
+        .hero-inner { display: grid; grid-template-columns: 55% 45%; gap: 40px; align-items: center; width: 100%; max-width: 1200px; margin-inline: auto; padding: 60px 48px; }
+        .hero-title { font-size: clamp(44px, 5.5vw, 76px); font-weight: 900; line-height: 1.05; letter-spacing: -2.5px; margin-bottom: 22px; }
+        .hero-sub { font-size: 18px; color: #44546A; line-height: 1.75; max-width: 480px; margin-bottom: 36px; }
+        .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+        .hero-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .hp { background: #fff; border: 1px solid oklch(88% 0.025 224); border-radius: 14px; padding: 14px; box-shadow: 0 4px 24px oklch(50% 0.17 224 / 0.09); opacity: 0; font-size: 12px; will-change: transform; }
+        .hp-hd { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid oklch(93% 0.015 224); }
+        .hp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .hp-nm { font-weight: 700; font-size: 13px; color: #0D1420; }
+        .hp-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid oklch(93% 0.015 224); font-size: 11px; color: #44546A; }
+        .hp-row:last-child { border-bottom: none; }
+        .hp-bar-bg { background: oklch(93% 0.015 224); border-radius: 4px; height: 6px; overflow: hidden; margin: 4px 0; }
+        .hp-bar { height: 100%; border-radius: 4px; }
+        .hp-label { font-size: 10px; color: #8EA3BB; margin-bottom: 6px; }
+        .hp-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; margin-top: 4px; }
+        .hp-cell { height: 18px; border-radius: 2px; background: oklch(93% 0.015 224); }
+        .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .badge-yellow { background: oklch(96% 0.05 82); color: oklch(48% 0.18 78); }
+        .badge-blue { background: oklch(93% 0.05 224); color: oklch(50% 0.17 224); }
+        .badge-green { background: oklch(93% 0.05 158); color: oklch(40% 0.15 155); }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 8px; font-family: 'Heebo', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s; text-decoration: none; border: none; }
+        .btn-primary { background: oklch(50% 0.17 224); color: #fff; }
+        .btn-primary:hover { background: oklch(42% 0.17 224); transform: translateY(-2px); }
+        .btn-secondary { background: transparent; color: #0D1420; border: 1.5px solid oklch(88% 0.025 224); }
+        .btn-secondary:hover { border-color: oklch(50% 0.17 224); color: oklch(50% 0.17 224); }
+        .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: oklch(50% 0.17 224); margin-bottom: 12px; }
+        @media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; padding: 48px 20px; } .hero-panels { margin-top: 32px; } }
       `}</style>
     </section>
   );

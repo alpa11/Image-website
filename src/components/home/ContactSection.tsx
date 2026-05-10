@@ -1,370 +1,153 @@
-import { useRef, useState } from "react";
-
-// Interest options — can be managed via admin panel later
-const interests = [
-  "מערכת רכש ותקציבים",
-  "מערכת תחזוקה",
-  "מערכת דיווחי שעות",
-  "מערכת משימות ומטלות",
-  "מערכת מותאמת אישית",
-  "לא בטוח, רוצה להתייעץ",
-];
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface FormData {
   name: string;
+  org: string;
   phone: string;
-  email: string;
-  organization: string;
-  interest: string;
-  notes: string;
+  message: string;
 }
 
 export default function ContactSection() {
-  const formRef = useRef<HTMLFormElement>(null);
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
-  const [form, setForm] = useState<FormData>({
-    name: "",
-    phone: "",
-    email: "",
-    organization: "",
-    interest: "",
-    notes: "",
-  });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }
+  const onSubmit = async (data: FormData) => {
+    setStatus('sending');
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setStatus("sending");
-
-    // TODO: Replace with Firestore write:
-    // await db.collection("leads").add({ ...form, createdAt: serverTimestamp() })
-    // For now, simulate success
-    console.log("Lead submitted:", form);
-
-    setTimeout(() => {
-      setStatus("sent");
-      setForm({ name: "", phone: "", email: "", organization: "", interest: "", notes: "" });
-    }, 900);
-  }
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log('Form submission:', data);
+      setStatus('sent');
+    } catch {
+      setStatus('error');
+    }
+  };
 
   return (
-    <section id="contact" className="contact-section">
-      <div className="container contact-inner">
-        {/* Left: CTA text */}
-        <div className="contact-text">
-          <div className="accent-line" style={{ marginBottom: "1.25rem" }} />
-          <h2 className="section-title contact-title">
-            מוכנים להפסיק לנהל<br />
-            <span className="gradient-text">בוואטסאפ?</span>
-          </h2>
-          <p className="contact-subtitle">
-            שאלו אותנו שאלה, ספרו לנו על הכאב שלכם,
-            או פשוט קבעו שיחת היכרות.
-          </p>
+    <section className="contact-section" id="contact">
+      <div className="wrap">
+        <div className="contact-inner">
+          <div className="ci-inf fade-up">
+            <div className="eyebrow" style={{ color: 'oklch(65% 0.14 220)' }}>צור קשר</div>
+            <h2 className="h2" style={{ color: '#fff' }}>מוכנים לשמוע על הכאוס שלכם</h2>
+            <p className="sub" style={{ marginTop: 14, color: 'oklch(68% 0.05 224)' }}>
+              שיחת אפיון ראשונה — בלי מחויבות.
+            </p>
 
-          <div className="contact-promises">
-            {[
-              "שיחה ראשונה ללא עלות",
-              "נבין את התהליך שלכם לפני שנציע כלום",
-              "לא מכריחים לרכוש, רק מסייעים להבין",
-            ].map((p) => (
-              <div key={p} className="contact-promise">
-                <svg viewBox="0 0 20 20" fill="none" width="18" height="18" style={{ flexShrink: 0 }}>
-                  <circle cx="10" cy="10" r="9" stroke="#00AFC6" strokeWidth="1.5"/>
-                  <path d="M6 10l3 3 5-5" stroke="#00AFC6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <span>{p}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right: Form */}
-        <div className="contact-form-wrap">
-          {status === "sent" ? (
-            <div className="contact-success">
-              <svg viewBox="0 0 48 48" fill="none" width="56" height="56">
-                <circle cx="24" cy="24" r="23" stroke="#00AFC6" strokeWidth="2"/>
-                <path d="M14 24l7 7 13-14" stroke="#00AFC6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <div className="cdet">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
               </svg>
-              <h3>קיבלנו את הפנייה שלכם</h3>
-              <p>נחזור אליכם בהקדם לתיאום שיחה.</p>
+              info@shc.co.il
             </div>
-          ) : (
-            <form ref={formRef} onSubmit={handleSubmit} className="contact-form" noValidate>
-              <div className="form-row">
-                <div className="form-field">
-                  <label htmlFor="name" className="form-label">שם מלא *</label>
+
+            <div className="cdet">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.69 13a19.79 19.79 0 01-3.07-8.67A2 2 0 013.6 2.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.91 9.91a16 16 0 006 6l.91-.91a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0121.73 17z" />
+              </svg>
+              052-000-0000
+            </div>
+          </div>
+
+          <div className="cform fade-up">
+            {status === 'sent' ? (
+              <div className="sent-state">
+                <svg className="sent-icon" viewBox="0 0 48 48" fill="none" width="52" height="52" aria-hidden="true">
+                  <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="2" />
+                  <path d="M15 24.5l6 6 13-14" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <h3>תודה. נחזור אליכם תוך 24 שעות.</h3>
+                <p>קיבלנו את הפנייה שלכם ונשמח לקבוע שיחת היכרות.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="fg">
+                  <label className="flbl">שם מלא</label>
                   <input
-                    id="name"
-                    name="name"
                     type="text"
-                    required
-                    value={form.name}
-                    onChange={handleChange}
-                    className="form-input"
+                    className={`fi${errors.name ? ' fi-err' : ''}`}
                     placeholder="ישראל ישראלי"
-                    autoComplete="name"
+                    {...register('name', { required: true })}
                   />
                 </div>
-                <div className="form-field">
-                  <label htmlFor="phone" className="form-label">טלפון *</label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    required
-                    value={form.phone}
-                    onChange={handleChange}
-                    className="form-input"
-                    placeholder="050-0000000"
-                    dir="ltr"
-                    autoComplete="tel"
-                  />
-                </div>
-              </div>
 
-              <div className="form-row">
-                <div className="form-field">
-                  <label htmlFor="email" className="form-label">מייל</label>
+                <div className="fg">
+                  <label className="flbl">שם המוסד / ארגון</label>
                   <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    className="form-input"
-                    placeholder="name@org.co.il"
-                    dir="ltr"
-                    autoComplete="email"
-                  />
-                </div>
-                <div className="form-field">
-                  <label htmlFor="organization" className="form-label">שם מוסד / ארגון *</label>
-                  <input
-                    id="organization"
-                    name="organization"
                     type="text"
-                    required
-                    value={form.organization}
-                    onChange={handleChange}
-                    className="form-input"
-                    placeholder="עמותת / בית ספר / חברה"
-                    autoComplete="organization"
+                    className={`fi${errors.org ? ' fi-err' : ''}`}
+                    placeholder="בית ספר · עמותה · ארגון"
+                    {...register('org', { required: true })}
                   />
                 </div>
-              </div>
 
-              <div className="form-field">
-                <label htmlFor="interest" className="form-label">תחום עניין *</label>
-                <select
-                  id="interest"
-                  name="interest"
-                  required
-                  value={form.interest}
-                  onChange={handleChange}
-                  className="form-input form-select"
+                <div className="fg">
+                  <label className="flbl">טלפון</label>
+                  <input
+                    type="tel"
+                    className="fi"
+                    placeholder="050-000-0000"
+                    {...register('phone')}
+                  />
+                </div>
+
+                <div className="fg">
+                  <label className="flbl">ספר לנו על הכאוס שלך</label>
+                  <textarea
+                    className="fi"
+                    placeholder="מה התהליכים שגורמים לבעיה?"
+                    {...register('message')}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn btn-primary submit-btn"
+                  disabled={status === 'sending'}
                 >
-                  <option value="">בחרו תחום עניין</option>
-                  {interests.map((opt) => (
-                    <option key={opt} value={opt}>{opt}</option>
-                  ))}
-                </select>
-              </div>
+                  {status === 'sending' ? 'שולח...' : 'שלח — נחזור תוך 24 שעות'}
+                </button>
 
-              <div className="form-field">
-                <label htmlFor="notes" className="form-label">הערות / תיאור הצורך</label>
-                <textarea
-                  id="notes"
-                  name="notes"
-                  value={form.notes}
-                  onChange={handleChange}
-                  className="form-input form-textarea"
-                  placeholder="ספרו לנו על הכאב שאתם מתמודדים איתו..."
-                  rows={4}
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={status === "sending"}
-                className="btn-primary contact-submit"
-              >
-                {status === "sending" ? "שולח..." : "שלח פנייה"}
-                {status !== "sending" && (
-                  <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
-                    <path d="M11 8H5M8 5l-3 3 3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
+                {status === 'error' && (
+                  <p className="err-msg">שגיאה בשליחה — נסה שנית או צור קשר ישירות.</p>
                 )}
-              </button>
-            </form>
-          )}
+              </form>
+            )}
+          </div>
         </div>
       </div>
 
       <style>{`
-        .contact-section {
-          padding-block: 6rem;
-          background: #F4F6F8;
-        }
-
-        .contact-inner {
-          display: grid;
-          grid-template-columns: 1fr 1.2fr;
-          gap: 5rem;
-          align-items: start;
-        }
-
-        .contact-title {
-          margin-bottom: 1.25rem;
-        }
-
-        .contact-subtitle {
-          font-size: 1rem;
-          color: #4A5568;
-          line-height: 1.7;
-          margin-bottom: 2rem;
-        }
-
-        .contact-promises {
-          display: flex;
-          flex-direction: column;
-          gap: 0.875rem;
-        }
-
-        .contact-promise {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          font-size: 0.9rem;
-          color: #4A5568;
-          font-weight: 500;
-        }
-
-        .contact-form-wrap {
-          background: #FFFFFF;
-          border-radius: 1.25rem;
-          padding: 2.5rem;
-          box-shadow: 0 4px 24px rgba(11, 37, 69, 0.08);
-          border: 1px solid #E2E8F0;
-        }
-
-        .contact-form {
-          display: flex;
-          flex-direction: column;
-          gap: 1.25rem;
-        }
-
-        .form-row {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1rem;
-        }
-
-        .form-field {
-          display: flex;
-          flex-direction: column;
-          gap: 0.375rem;
-        }
-
-        .form-label {
-          font-size: 0.825rem;
-          font-weight: 600;
-          color: #0B2545;
-        }
-
-        .form-input {
-          padding: 0.75rem 1rem;
-          border: 1.5px solid #E2E8F0;
-          border-radius: 0.5rem;
-          font-size: 0.9rem;
-          font-family: inherit;
-          color: #0B2545;
-          background: #FAFAFA;
-          transition: border-color 0.2s ease, box-shadow 0.2s ease;
-          outline: none;
-          width: 100%;
-        }
-
-        .form-input:focus {
-          border-color: #00AFC6;
-          box-shadow: 0 0 0 3px rgba(0, 175, 198, 0.12);
-          background: #FFFFFF;
-        }
-
-        .form-input::placeholder {
-          color: #A0AEC0;
-        }
-
-        .form-select {
-          cursor: pointer;
-          appearance: none;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%234A5568'%3E%3Cpath d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'/%3E%3C/svg%3E");
-          background-repeat: no-repeat;
-          background-position: left 0.75rem center;
-          background-size: 1.25rem;
-          padding-left: 2.5rem;
-        }
-
-        .form-textarea {
-          resize: vertical;
-          min-height: 100px;
-        }
-
-        .contact-submit {
-          width: 100%;
-          justify-content: center;
-          flex-direction: row-reverse;
-          margin-top: 0.25rem;
-          font-size: 1rem;
-          padding-block: 1rem;
-        }
-
-        .contact-submit:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-          transform: none;
-        }
-
-        .contact-success {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-          padding: 3rem 2rem;
-          gap: 1rem;
-          min-height: 300px;
-        }
-
-        .contact-success h3 {
-          font-size: 1.25rem;
-          font-weight: 800;
-          color: #0B2545;
-        }
-
-        .contact-success p {
-          color: #4A5568;
-          font-size: 0.95rem;
-        }
+        .contact-section { padding: 96px 0; background: #0D1420; color: #fff; }
+        .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+        .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: oklch(50% 0.17 224); margin-bottom: 12px; }
+        .h2 { font-size: clamp(28px,3.5vw,44px); font-weight: 800; letter-spacing: -.5px; line-height: 1.15; }
+        .sub { font-size: 17px; line-height: 1.75; }
+        .fade-up { opacity: 0; transform: translateY(30px); }
+        .cdet { display: flex; gap: 12px; align-items: center; margin-top: 20px; font-size: 15px; color: oklch(72% 0.05 224); }
+        .cform { background: oklch(18% 0.03 224); border-radius: 16px; padding: 32px; border: 1px solid oklch(28% 0.04 224); }
+        .fg { margin-bottom: 14px; }
+        .flbl { display: block; font-size: 13px; font-weight: 600; color: oklch(68% 0.04 224); margin-bottom: 6px; }
+        .fi { width: 100%; padding: 12px 14px; border-radius: 8px; background: oklch(23% 0.03 224); border: 1px solid oklch(28% 0.04 224); color: #fff; font-family: 'Heebo', sans-serif; font-size: 15px; outline: none; transition: border-color .2s; box-sizing: border-box; }
+        .fi:focus { border-color: oklch(65% 0.14 220); }
+        .fi::placeholder { color: oklch(48% 0.04 224); }
+        .fi-err { border-color: #ff3b30 !important; }
+        textarea.fi { height: 100px; resize: vertical; }
+        .submit-btn { width: 100%; justify-content: center; margin-top: 4px; }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 8px; font-family: 'Heebo', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s; text-decoration: none; border: none; }
+        .btn-primary { background: oklch(50% 0.17 224); color: #fff; }
+        .btn-primary:hover:not(:disabled) { background: oklch(42% 0.17 224); transform: translateY(-2px); }
+        .err-msg { color: #ff6b6b; font-size: 13px; margin-top: 8px; text-align: center; }
+        .sent-state { text-align: center; padding: 20px 0; }
+        .sent-icon { color: oklch(57% 0.13 207); margin-bottom: 16px; }
+        .sent-state h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+        .sent-state p { font-size: 14px; color: oklch(68% 0.04 224); }
 
         @media (max-width: 900px) {
-          .contact-inner {
-            grid-template-columns: 1fr;
-            gap: 2.5rem;
-          }
-        }
-
-        @media (max-width: 540px) {
-          .form-row {
-            grid-template-columns: 1fr;
-          }
-          .contact-form-wrap {
-            padding: 1.5rem;
-          }
+          .contact-inner { grid-template-columns: 1fr; gap: 40px; }
         }
       `}</style>
     </section>

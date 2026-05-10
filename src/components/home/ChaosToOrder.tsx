@@ -1,600 +1,364 @@
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ─── Chaos items: the old way ─────────────────────────────────
-const CHAOS = [
+interface ChaosCardConfig {
+  id: string;
+  style: React.CSSProperties;
+  headerBg?: string;
+  title?: string;
+  badge?: string;
+  rows?: { name: string; text: string; cls?: string }[];
+  isEmail?: boolean;
+  isExcel?: boolean;
+  isSticky?: boolean;
+  isCalls?: boolean;
+  isFiles?: boolean;
+  icon?: React.ReactNode;
+}
+
+const CARDS: ChaosCardConfig[] = [
   {
-    id: "whatsapp",
-    label: "וואטסאפ",
-    bg: "#E8F8EF",
-    color: "#128C7E",
+    id: 'ce1',
+    style: { top: '9%', right: '6%' },
+    headerBg: '#128C7E',
+    title: 'צוות תחזוקה',
+    badge: '47',
+    rows: [
+      { name: 'יוסי ב׳:', text: 'מי בדק את המזגן בקומה 3?', cls: '' },
+      { name: 'ליאת כ.:', text: 'אני לא יודעת, שאלו את מוטי', cls: '' },
+      { name: 'מוטי ל.:', text: 'שוב? זה פעם שלישית החודש', cls: 'new' },
+    ],
     icon: (
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="#25D366">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" style={{ flexShrink: 0 }}>
+        <path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1l-.8 1.1c-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.2-.7-1.6-.9-2.2-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3 4.9 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.7.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.3s-.2-.2-.5-.3z" />
+        <path d="M12 1C5.9 1 1 5.9 1 12c0 2 .5 3.8 1.4 5.4L1 23l5.8-1.5C8.3 22.5 10.1 23 12 23c6.1 0 11-4.9 11-11S18.1 1 12 1zm0 20c-1.9 0-3.7-.5-5.2-1.4l-.4-.2-3.4.9.9-3.3-.3-.4C2.5 15.7 2 13.9 2 12 2 6.5 6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z" />
       </svg>
     ),
   },
   {
-    id: "excel",
-    label: "אקסל",
-    bg: "#EAF4EE",
-    color: "#217346",
+    id: 'ce2',
+    style: { top: '6%', left: '7%', width: 240 },
+    headerBg: '#1a73e8',
+    title: 'Gmail',
+    badge: '12',
+    isEmail: true,
     icon: (
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="#217346">
-        <path d="M21.17 3.25Q21.5 3.25 21.76 3.5 22 3.74 22 4.08V19.92Q22 20.26 21.76 20.5 21.5 20.75 21.17 20.75H7.83Q7.5 20.75 7.24 20.5 7 20.26 7 19.92V17H2.83Q2.5 17 2.24 16.76 2 16.5 2 16.17V7.83Q2 7.5 2.24 7.24 2.5 7 2.83 7H7V4.08Q7 3.74 7.24 3.5 7.5 3.25 7.83 3.25M7 13.06L8.18 15.28H9.97L8 12 9.93 8.72H8.13L7 10.87 5.87 8.72H4.1L6 12 4.07 15.28H5.86M14 19.5V17H9V19.5M14 13.5V10.5H9V13.5M14 9.5V7H9V9.5M21 19.5V17H15V19.5M21 13.5V10.5H15V13.5M21 9.5V7H15V9.5Z"/>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" style={{ flexShrink: 0 }}>
+        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
       </svg>
     ),
   },
   {
-    id: "phone",
-    label: "טלפונים",
-    bg: "#F0F4FF",
-    color: "#3B82F6",
+    id: 'ce3',
+    style: { top: '38%', right: '3%' },
+    headerBg: '#217346',
+    title: 'דיווחי_שעות_ינואר_v3_סופי.xlsx',
+    isExcel: true,
     icon: (
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#3B82F6" strokeWidth="1.8">
-        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.02 2.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" style={{ flexShrink: 0 }}>
+        <path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h2v2H7V7zm4 0h2v2h-2V7zm4 0h2v2h-2V7zM7 11h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zM7 15h2v2H7v-2zm4 0h2v2h-2v-2z" />
+      </svg>
+    ),
+  },
+  { id: 'ce4', style: { bottom: '22%', right: '17%', width: 150 }, isSticky: true },
+  {
+    id: 'ce5',
+    style: { bottom: '20%', left: '7%' },
+    headerBg: 'oklch(48% 0.15 280)',
+    title: 'שיחות שהוחמצו',
+    badge: '6',
+    isCalls: true,
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" style={{ flexShrink: 0 }}>
+        <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C3.4 21 3 13.6 3 12c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6l-2-1z" />
       </svg>
     ),
   },
   {
-    id: "email",
-    label: "מיילים",
-    bg: "#FEF2F2",
-    color: "#DC2626",
+    id: 'ce6',
+    style: { top: '44%', left: '4%' },
+    headerBg: 'oklch(52% 0.14 45)',
+    title: 'מסמכים אחרונים',
+    isFiles: true,
     icon: (
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#DC2626" strokeWidth="1.8">
-        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-        <polyline points="22,6 12,13 2,6"/>
-      </svg>
-    ),
-  },
-  {
-    id: "note",
-    label: "פתקים",
-    bg: "#FFFBEB",
-    color: "#D97706",
-    icon: (
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="#FCD34D">
-        <rect x="3" y="3" width="18" height="18" rx="2" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5"/>
-        <line x1="7" y1="8" x2="17" y2="8" stroke="#D97706" strokeWidth="1.5"/>
-        <line x1="7" y1="12" x2="14" y2="12" stroke="#D97706" strokeWidth="1.5"/>
-        <line x1="7" y1="16" x2="12" y2="16" stroke="#D97706" strokeWidth="1.5"/>
-      </svg>
-    ),
-  },
-  {
-    id: "folder",
-    label: "תיקיות",
-    bg: "#F5F3FF",
-    color: "#7C3AED",
-    icon: (
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#7C3AED" strokeWidth="1.8">
-        <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
-      </svg>
-    ),
-  },
-  {
-    id: "sms",
-    label: "הודעות SMS",
-    bg: "#ECFDF5",
-    color: "#059669",
-    icon: (
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#059669" strokeWidth="1.8">
-        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" style={{ flexShrink: 0 }}>
+        <path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" />
       </svg>
     ),
   },
 ];
 
-// ─── Order items: the 4 systems ──────────────────────────────
-const ORDER = [
-  {
-    id: "maintenance",
-    name: "מערכת תחזוקה",
-    desc: "כל קריאה מקבלת כתובת ואחראי",
-    color: "#E8843A",
-    bg: "#FFF5EE",
-    icon: (
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
-      </svg>
-    ),
-  },
-  {
-    id: "procurement",
-    name: "מערכת רכש",
-    desc: "בקשות, אישורים ותקציב מסודר",
-    color: "#2E9E6B",
-    bg: "#F0FBF5",
-    icon: (
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-        <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
-      </svg>
-    ),
-  },
-  {
-    id: "salary",
-    name: "דיווחי שעות",
-    desc: "דיווח, מסמכים ובקרה חודשית",
-    color: "#4A6FD4",
-    bg: "#EEF2FF",
-    icon: (
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-      </svg>
-    ),
-  },
-  {
-    id: "tasks",
-    name: "מערכת משימות",
-    desc: "כל משימה יודעת מי אחראי עליה",
-    color: "#7C5CBF",
-    bg: "#F3F0FF",
-    icon: (
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <polyline points="9 11 12 14 22 4"/>
-        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
-      </svg>
-    ),
-  },
-];
+function ChaosCard({ card }: { card: ChaosCardConfig }) {
+  if (card.isSticky) {
+    return (
+      <div id={card.id} className="ce ce-sticky" style={card.style}>
+        <div className="ce-b" style={{ background: '#FFF9C4', padding: 14 }}>
+          <div className="sticky-h">לא לשכוח:</div>
+          <div className="sticky-row"><span>•</span><span>לרכוש כסאות ×12</span></div>
+          <div className="sticky-row"><span>•</span><span>להזמין את הציוד</span></div>
+          <div className="sticky-row"><span>•</span><span style={{ color: '#aaa' }}>לדבר עם האחראי</span></div>
+          <div className="sticky-row" style={{ marginTop: 6, fontSize: 9, color: '#aaa' }}>מתי זה קורה?</div>
+        </div>
+      </div>
+    );
+  }
 
-// ─── Initial positions for chaos items (as %) ────────────────
-const CHAOS_POSITIONS = [
-  { x: 8, y: 10, r: -18 },
-  { x: 68, y: 5, r: 14 },
-  { x: 20, y: 62, r: -8 },
-  { x: 74, y: 55, r: 20 },
-  { x: 44, y: 18, r: -22 },
-  { x: 10, y: 38, r: 12 },
-  { x: 80, y: 28, r: -10 },
+  return (
+    <div id={card.id} className="ce" style={card.style}>
+      <div className="ce-h" style={{ background: card.headerBg }}>
+        {card.icon}
+        <span className="ce-title" style={card.id === 'ce3' ? { fontSize: 10, overflow: 'hidden', whiteSpace: 'nowrap' } : {}}>
+          {card.title}
+        </span>
+        {card.badge && <span className="ce-badge">{card.badge}</span>}
+      </div>
+      <div className="ce-b">
+        {card.rows?.map((r, i) => (
+          <div key={i} className={`ce-row ${r.cls || ''}`}>
+            <span className="name">{r.name}</span> {r.text}
+          </div>
+        ))}
+
+        {card.isEmail && (
+          <>
+            <div className="ce-subject">RE:RE:FW: תקציב ינואר 2026</div>
+            <div className="ce-meta">ד"ר שמשון · לפני 3 שעות</div>
+            <div className="ce-row" style={{ marginTop: 6, color: '#666' }}>ראה את מה שצירפתי — חשוב לפגישה...</div>
+            <div className="ce-row" style={{ color: '#aaa' }}>RE: בנוגע לפגישה מחר עם הוועדה</div>
+            <div className="ce-row" style={{ color: '#aaa' }}>FWD: נושאים לדיון — טיוטה 3</div>
+          </>
+        )}
+
+        {card.isExcel && (
+          <div className="ce-xls">
+            <div className="xls-cell head">שם</div><div className="xls-cell head">שעות</div><div className="xls-cell head">סטטוס</div>
+            <div className="xls-cell">רחל כ.</div><div className="xls-cell">42</div><div className="xls-cell ok">תקין</div>
+            <div className="xls-cell">דוד מ.</div><div className="xls-cell err">חסר</div><div className="xls-cell err">בדיקה</div>
+            <div className="xls-cell">מרים ל.</div><div className="xls-cell">38</div><div className="xls-cell ok">תקין</div>
+            <div className="xls-cell">יוסי ב.</div><div className="xls-cell err">חסר</div><div className="xls-cell err">בדיקה</div>
+          </div>
+        )}
+
+        {card.isCalls && (
+          <>
+            {['יעל קורסי', 'הנהלה', 'ועדת רכש'].map((name, i) => (
+              <div key={name} className="ce-call-row">
+                <span style={{ display: 'flex', gap: 6, alignItems: 'center' }}><span className="missed-dot" />{name}</span>
+                <span style={{ color: '#ff3b30', fontWeight: 700, fontSize: 10 }}>×{i === 0 ? 3 : i === 1 ? 2 : 1}</span>
+              </div>
+            ))}
+          </>
+        )}
+
+        {card.isFiles && (
+          <>
+            {['תקציב_2026_FINAL_v2.xlsx', 'דוח_רבעוני_חדש_אמיתי.docx', 'טבלה_עדכון_סופי_2.xlsx', 'דוח_ישן_v1_לא_רלוונטי.xlsx'].map((file, i) => (
+              <div key={file} className="ce-file-row" style={i === 3 ? { color: '#aaa' } : {}}>
+                <span className="ficon">DOC</span>{file}
+              </div>
+            ))}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const RESULT_CARDS = [
+  { color: 'oklch(50% 0.17 232)', label: 'תחזוקה', kpis: [{ val: 3, text: ' תקלות פתוחות' }, { val: 94, text: '% SLA' }, { val: 1, text: ' בטיפול כעת' }] },
+  { color: 'oklch(53% 0.15 218)', label: 'רכש', kpis: [{ val: 68, text: '% תקציב בשימוש' }, { val: 2, text: ' בקשות פתוחות' }, { val: 4, text: ' ספקים פעילים' }] },
+  { color: 'oklch(57% 0.13 207)', label: 'שעות', kpis: [{ val: 12, text: '/15 דיווחו' }, { val: 3, text: ' ממתינים אישור' }, { val: 284, text: ' שעות השבוע' }] },
+  { color: 'oklch(55% 0.14 196)', label: 'משימות', kpis: [{ val: 7, text: ' פתוחות' }, { val: 3, text: ' הושלמו היום' }, { val: 2, text: ' איחורים' }] },
 ];
 
 export default function ChaosToOrder() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const pinRef = useRef<HTMLDivElement>(null);
-  const chaosItemRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const orderCardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const labelBeforeRef = useRef<HTMLDivElement>(null);
-  const labelAfterRef = useRef<HTMLDivElement>(null);
-  const arrowRef = useRef<HTMLDivElement>(null);
-  const headRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMob = window.innerWidth < 900;
+    const rots = [-8, 6, -4, 12, -10, 5];
+    const ces = document.querySelectorAll<HTMLElement>('.ce');
 
-    // Always show section header
-    gsap.from(headRef.current, {
-      opacity: 0, y: 30, duration: 0.8, ease: "power3.out",
-      scrollTrigger: { trigger: headRef.current, start: "top 80%" },
+    ces.forEach((el, i) => gsap.set(el, { rotate: rots[i] }));
+
+    const floats = [...ces].map((el, i) =>
+      gsap.to(el, { y: `+=${6 + i * 2}`, duration: 2.2 + i * 0.3, ease: 'sine.inOut', yoyo: true, repeat: -1 })
+    );
+
+    const vcx = window.innerWidth / 2;
+    const vcy = window.innerHeight / 2;
+    const targets: { dx: number; dy: number }[] = [];
+
+    ces.forEach(el => {
+      const r = el.getBoundingClientRect();
+      targets.push({ dx: vcx - (r.left + r.width / 2), dy: vcy - (r.top + r.height / 2) });
     });
 
-    if (prefersReduced) {
-      // Just fade everything in without animation
-      gsap.set(chaosItemRefs.current, { opacity: 0 });
-      gsap.set(orderCardRefs.current, { opacity: 1 });
-      return;
-    }
+    if (!isMob) {
+      gsap.set('#cresult', { scale: 0.82, opacity: 0 });
 
-    const isMobile = window.innerWidth < 768;
-
-    if (isMobile) {
-      // Mobile: simple fade transition (no pin)
-      gsap.from(chaosItemRefs.current, {
-        opacity: 0, scale: 0.8, stagger: 0.07,
-        scrollTrigger: { trigger: pinRef.current, start: "top 80%" },
-      });
-      gsap.from(orderCardRefs.current, {
-        opacity: 0, y: 20, stagger: 0.08,
-        scrollTrigger: { trigger: pinRef.current, start: "top 60%" },
-      });
-      return;
-    }
-
-    const ctx = gsap.context(() => {
-      // ── Set initial states ──
-      gsap.set(orderCardRefs.current, { opacity: 0, scale: 0.85, y: 20 });
-      gsap.set(labelAfterRef.current, { opacity: 0 });
-      gsap.set(arrowRef.current, { opacity: 0 });
-
-      // ── Initial float animation for chaos items (before scroll) ──
-      chaosItemRefs.current.forEach((el, i) => {
-        if (!el) return;
-        gsap.to(el, {
-          y: `${Math.sin(i * 1.4) * 10}`,
-          rotation: `${CHAOS_POSITIONS[i].r + Math.sin(i) * 4}`,
-          duration: 1.8 + i * 0.25,
-          ease: "sine.inOut",
-          yoyo: true,
-          repeat: -1,
-          delay: i * 0.15,
-        });
-      });
-
-      // ── ScrollTrigger timeline with pin ──
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=180%",
-          pin: pinRef.current,
-          scrub: 1.2,
+          trigger: '#chaos',
+          start: 'top top',
+          end: '+=350%',
+          pin: true,
+          scrub: 1.8,
           anticipatePin: 1,
+          onEnter: () => floats.forEach(f => f.kill()),
         },
       });
 
-      // Phase 1 (0 → 0.35): chaos items converge toward center
-      tl.to(chaosItemRefs.current, {
-        x: () => {
-          const field = pinRef.current?.querySelector(".cto-field") as HTMLElement;
-          const w = field?.offsetWidth ?? 600;
-          return w / 2;
-        },
-        y: () => {
-          const field = pinRef.current?.querySelector(".cto-field") as HTMLElement;
-          const h = field?.offsetHeight ?? 400;
-          return h / 2;
-        },
-        scale: 0.7,
-        opacity: 0.6,
-        rotation: 0,
-        stagger: { each: 0.04, from: "random" },
-        duration: 0.35,
-        ease: "power2.inOut",
-      }, 0);
+      tl.to('#chaos-title-area', { opacity: 0, y: -20, duration: 0.4 }, 0);
+      tl.to('#ct1', { opacity: 1, y: 0, duration: 0.35 }, 0.08);
 
-      // Phase 2 (0.35 → 0.55): chaos items fade out + arrow appears
-      tl.to(chaosItemRefs.current, {
-        scale: 0,
+      ces.forEach((el, i) => {
+        tl.to(el, { x: targets[i].dx, y: targets[i].dy, rotate: 0, scale: 0.88, duration: 1, ease: 'power2.in' }, 0.15 + i * 0.05);
+      });
+
+      tl.to('#ct1', { opacity: 0, duration: 0.2 }, 0.55);
+      tl.to('#ct2', { opacity: 1, y: 0, duration: 0.25 }, 0.6);
+      tl.to('#cglow', { scale: 1.8, opacity: 1, duration: 0.6 }, 0.5);
+      tl.to('#ct2', { opacity: 0, duration: 0.2 }, 0.88);
+      tl.to('#cflash', { opacity: 0.92, duration: 0.04 }, 0.82);
+      tl.to('#cflash', { opacity: 0, duration: 0.3 }, 0.86);
+      tl.to(ces, { opacity: 0, scale: 0.45, duration: 0.2, stagger: 0.025 }, 0.82);
+      tl.to('#cglow', { opacity: 0, scale: 0.5, duration: 0.3 }, 0.84);
+      tl.set('#cresult', { display: 'grid' }, 0.87);
+      tl.to('#cresult', { opacity: 1, scale: 1, duration: 0.55, ease: 'back.out(1.4)' }, 0.87);
+
+      tl.call(() => {
+        document.querySelectorAll<HTMLElement>('.kpi-num').forEach(el => {
+          const t = parseInt(el.dataset.t || '0', 10);
+          gsap.to(el, { innerText: t, duration: 0.9, snap: { innerText: 1 }, ease: 'power2.out' });
+        });
+      }, undefined, 0.9);
+
+      tl.to('#ct3', { opacity: 1, y: 0, duration: 0.4 }, 0.96);
+    } else {
+      gsap.from(ces, {
         opacity: 0,
-        duration: 0.2,
-        stagger: 0.02,
-        ease: "power2.in",
-      }, 0.35)
-      .to(arrowRef.current, { opacity: 1, duration: 0.1 }, 0.4)
-      .to(labelBeforeRef.current, { opacity: 0, y: -10, duration: 0.15 }, 0.38)
-      .to(labelAfterRef.current, { opacity: 1, y: 0, duration: 0.2 }, 0.48);
-
-      // Phase 3 (0.55 → 1): order cards appear
-      tl.to(orderCardRefs.current, {
-        opacity: 1,
-        scale: 1,
-        y: 0,
+        y: 20,
+        duration: 0.5,
         stagger: 0.08,
-        duration: 0.35,
-        ease: "back.out(1.2)",
-      }, 0.55);
+        scrollTrigger: { trigger: '#chaos', start: 'top 75%' },
+      });
 
-    }, sectionRef);
+      ScrollTrigger.create({
+        trigger: '#chaos',
+        start: 'center 60%',
+        onEnter: () => {
+          gsap.to(ces, { opacity: 0, scale: 0.8, duration: 0.4, stagger: 0.04 });
+          setTimeout(() => {
+            const r = document.getElementById('cresult');
+            if (r) {
+              r.style.display = 'grid';
+              gsap.from(r, { opacity: 0, y: 20, duration: 0.5 });
+              gsap.to('#ct3', { opacity: 1, duration: 0.4, delay: 0.3 });
+              document.querySelectorAll<HTMLElement>('.kpi-num').forEach(el => {
+                gsap.to(el, { innerText: parseInt(el.dataset.t || '0', 10), duration: 0.8, snap: { innerText: 1 }, ease: 'power2.out', delay: 0.5 });
+              });
+            }
+          }, 600);
+        },
+      });
+    }
 
-    return () => ctx.revert();
+    return () => {
+      floats.forEach(f => f.kill());
+      ScrollTrigger.getAll().forEach(st => st.kill());
+    };
   }, []);
 
   return (
-    <section ref={sectionRef} className="cto-section">
-      {/* Static header — outside the pinned area */}
-      <div ref={headRef} className="cto-head container">
-        <div className="accent-line" style={{ marginBottom: "1.25rem" }} />
-        <h2 className="section-title cto-title">
-          כאן מתחיל השינוי
-        </h2>
-        <p className="section-subtitle" style={{ marginTop: "0.75rem" }}>
-          בגלילה תראו איך כלים מפוזרים הופכים לתהליך אחד מסודר.
-        </p>
-      </div>
+    <section className="chaos" id="chaos">
+      <div className="chaos-wrap" id="cwrap">
+        <div className="chaos-bg-grid" />
+        <div className="chaos-bg-glow" id="cglow" />
 
-      {/* Pinned visual area */}
-      <div ref={pinRef} className="cto-pin">
-        <div className="cto-field-wrap">
-          {/* State labels */}
-          <div ref={labelBeforeRef} className="cto-state-label cto-state-label--chaos">
-            <span className="cto-dot cto-dot--red" />
-            ככה מנהלים היום
-          </div>
-          <div
-            ref={labelAfterRef}
-            className="cto-state-label cto-state-label--order"
-            style={{ opacity: 0 }}
-          >
-            <span className="cto-dot cto-dot--green" />
-            ככה נראה עם SHC
-          </div>
-
-          {/* Transition arrow */}
-          <div ref={arrowRef} className="cto-arrow" style={{ opacity: 0 }} aria-hidden="true">
-            <svg viewBox="0 0 40 40" fill="none" width="40" height="40">
-              <circle cx="20" cy="20" r="19" stroke="#00AFC6" strokeWidth="1.5"/>
-              <path d="M24 20H16M20 15l-5 5 5 5" stroke="#00AFC6" strokeWidth="1.8" strokeLinecap="round"/>
-            </svg>
-          </div>
-
-          {/* The field */}
-          <div className="cto-field">
-            {/* Chaos items */}
-            {CHAOS.map((item, i) => (
-              <div
-                key={item.id}
-                ref={(el) => { chaosItemRefs.current[i] = el; }}
-                className="cto-chaos-item"
-                style={{
-                  top: `${CHAOS_POSITIONS[i].y}%`,
-                  left: `${CHAOS_POSITIONS[i].x}%`,
-                  transform: `rotate(${CHAOS_POSITIONS[i].r}deg)`,
-                  background: item.bg,
-                  borderColor: `${item.color}30`,
-                }}
-              >
-                {item.icon}
-                <span className="cto-chaos-label" style={{ color: item.color }}>{item.label}</span>
-              </div>
-            ))}
-
-            {/* Order cards — 2x2 grid, centered */}
-            <div className="cto-order-grid">
-              {ORDER.map((sys, i) => (
-                <div
-                  key={sys.id}
-                  ref={(el) => { orderCardRefs.current[i] = el; }}
-                  className="cto-order-card"
-                  style={{ "--c": sys.color, "--cb": sys.bg } as React.CSSProperties}
-                >
-                  <div className="cto-order-icon" style={{ background: sys.bg, color: sys.color }}>
-                    {sys.icon}
-                  </div>
-                  <div className="cto-order-text">
-                    <strong className="cto-order-name">{sys.name}</strong>
-                    <span className="cto-order-desc">{sys.desc}</span>
-                  </div>
-                  <div className="cto-order-check" style={{ background: `${sys.color}18`, color: sys.color }}>
-                    <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-                      <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5"/>
-                      <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                    </svg>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="chaos-title-area" id="chaos-title-area">
+          <div className="eyebrow" style={{ color: 'oklch(65% 0.14 220)' }}>הטרנספורמציה</div>
+          <h2 className="h2" style={{ color: '#fff', fontSize: 'clamp(26px,3vw,40px)' }}>
+            מהכאוס שמנהלים —<br />
+            <span style={{ color: 'oklch(65% 0.14 220)' }}>לארכיטקטורה שעובדת</span>
+          </h2>
         </div>
 
-        {/* Scroll hint text */}
-        <p className="cto-scroll-hint" aria-hidden="true">
-          גללו למטה לראות את השינוי
-          <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-            <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          </svg>
-        </p>
+        {CARDS.map(card => <ChaosCard key={card.id} card={card} />)}
+
+        <div className="chaos-flash" id="cflash" />
+
+        <div id="cresult" style={{ display: 'none' }}>
+          {RESULT_CARDS.map((rc, i) => (
+            <div key={i} className="cr-card">
+              <div className="cr-h" style={{ background: rc.color }}>
+                <div className="cr-h-dot" />
+                <span>{rc.label}</span>
+              </div>
+              <div className="cr-b">
+                {rc.kpis.map((kpi, j) => (
+                  <div key={j} className="cr-kpi">
+                    <span className="kpi-num" data-t={kpi.val}>0</span>
+                    <span>{kpi.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="narrative" id="ct1">ככה נראה הניהול של המוסד שלכם היום.</div>
+        <div className="narrative" id="ct2">כולם עסוקים. שום דבר לא מסודר. שום דבר לא נראה.</div>
+        <div className="narrative nb" id="ct3">SHC הופכת את הכאוס לארכיטקטורה שעובדת.</div>
       </div>
 
       <style>{`
-        .cto-section {
-          background: #FFFFFF;
-        }
-
-        .cto-head {
-          padding-block: 5rem 2.5rem;
-        }
-
-        .cto-title {
-          font-size: clamp(1.75rem, 4vw, 2.75rem);
-        }
-
-        /* ── Pinned area ── */
-        .cto-pin {
-          height: 100vh;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding-block: 2rem;
-          position: relative;
-        }
-
-        .cto-field-wrap {
-          position: relative;
-          width: 100%;
-          max-width: 820px;
-          margin-inline: auto;
-          padding-inline: 1.5rem;
-        }
-
-        /* State labels */
-        .cto-state-label {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.35rem 1rem;
-          border-radius: 9999px;
-          font-size: 0.82rem;
-          font-weight: 700;
-          margin-bottom: 1.25rem;
-          transition: opacity 0.3s ease;
-        }
-        .cto-state-label--chaos {
-          background: #FEF2F2;
-          color: #DC2626;
-          border: 1px solid #FECACA;
-        }
-        .cto-state-label--order {
-          position: absolute;
-          top: 0;
-          right: 1.5rem;
-          background: rgba(0,175,198,0.1);
-          color: #0B7FD3;
-          border: 1px solid rgba(0,175,198,0.25);
-        }
-
-        .cto-dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          flex-shrink: 0;
-        }
-        .cto-dot--red { background: #EF4444; }
-        .cto-dot--green { background: #10B981; }
-
-        /* Arrow */
-        .cto-arrow {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          z-index: 20;
-        }
-
-        /* Field */
-        .cto-field {
-          position: relative;
-          width: 100%;
-          height: 420px;
-          background: #F8FAFC;
-          border: 1px solid #E2E8F0;
-          border-radius: 1.25rem;
-          overflow: hidden;
-        }
-
-        /* Chaos items */
-        .cto-chaos-item {
-          position: absolute;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.375rem;
-          padding: 0.875rem 0.75rem;
-          border-radius: 0.875rem;
-          border: 1.5px solid transparent;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-          width: 92px;
-          cursor: default;
-          user-select: none;
-          background: #FFFFFF;
-          z-index: 10;
-        }
-
-        .cto-chaos-label {
-          font-size: 0.62rem;
-          font-weight: 600;
-          text-align: center;
-          line-height: 1.2;
-        }
-
-        /* Order cards grid */
-        .cto-order-grid {
-          position: absolute;
-          inset: 0;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1rem;
-          padding: 1.5rem;
-          align-items: center;
-          z-index: 5;
-        }
-
-        .cto-order-card {
-          display: flex;
-          align-items: center;
-          gap: 0.875rem;
-          padding: 1.125rem 1.25rem;
-          background: #FFFFFF;
-          border-radius: 1rem;
-          border: 1.5px solid rgba(0,0,0,0.06);
-          box-shadow:
-            0 4px 16px rgba(11,37,69,0.08),
-            0 0 0 1px var(--c, #00AFC6) inset;
-          border-inline-start: 3px solid var(--c, #00AFC6);
-        }
-
-        .cto-order-icon {
-          width: 44px;
-          height: 44px;
-          border-radius: 0.625rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
-        .cto-order-text {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 0.125rem;
-          min-width: 0;
-        }
-
-        .cto-order-name {
-          font-size: 0.85rem;
-          font-weight: 800;
-          color: #0B2545;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .cto-order-desc {
-          font-size: 0.7rem;
-          color: #718096;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .cto-order-check {
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
-        /* Scroll hint */
-        .cto-scroll-hint {
-          display: flex;
-          align-items: center;
-          gap: 0.375rem;
-          font-size: 0.8rem;
-          color: #A0AEC0;
-          margin-top: 1.25rem;
-          font-weight: 500;
-        }
-
-        @media (max-width: 768px) {
-          .cto-pin {
-            height: auto;
-            padding-block: 2rem;
-          }
-          .cto-field {
-            height: 500px;
-          }
-          .cto-chaos-item {
-            width: 78px;
-            padding: 0.625rem;
-          }
-          .cto-chaos-item svg {
-            width: 20px; height: 20px;
-          }
-          .cto-order-grid {
-            grid-template-columns: 1fr;
-            gap: 0.625rem;
-            padding: 1rem;
-          }
-          .cto-scroll-hint {
-            display: none;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .cto-field { height: 560px; }
-          .cto-order-card { padding: 0.75rem; }
-          .cto-order-icon { width: 36px; height: 36px; }
-          .cto-order-name { font-size: 0.78rem; }
-        }
+        .chaos { background: #0D1420; position: relative; overflow: hidden; }
+        .chaos-wrap { width: 100%; height: 100vh; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .chaos-bg-grid { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(100,160,255,.08) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
+        .chaos-bg-glow { position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, oklch(50% 0.17 224 / .12) 0%, transparent 70%); transform: translate(-50%,-50%); pointer-events: none; }
+        .chaos-title-area { position: absolute; top: 8%; width: 100%; text-align: center; z-index: 10; padding: 0 20px; pointer-events: none; }
+        .ce { position: absolute; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,.35); width: 220px; z-index: 20; will-change: transform; direction: rtl; }
+        .ce-h { display: flex; align-items: center; gap: 8px; padding: 10px 12px; color: #fff; }
+        .ce-title { font-size: 12px; font-weight: 700; flex: 1; color: #fff; }
+        .ce-badge { background: #ff3b30; color: #fff; border-radius: 10px; padding: 1px 7px; font-size: 10px; font-weight: 800; min-width: 22px; text-align: center; }
+        .ce-b { padding: 10px 12px; background: #fff; font-size: 11px; }
+        .ce-row { padding: 4px 0; border-bottom: 1px solid #f5f5f5; color: #555; font-size: 11px; line-height: 1.4; }
+        .ce-row:last-child { border-bottom: none; }
+        .ce-row .name { font-weight: 600; color: #222; }
+        .ce-row.new { color: #25D366; font-weight: 600; }
+        .ce-meta { font-size: 10px; color: #999; margin-top: 2px; }
+        .ce-subject { font-weight: 700; color: #222; margin-bottom: 3px; }
+        .ce-xls { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; font-size: 9px; font-family: monospace; direction: ltr; }
+        .xls-cell { padding: 3px 4px; background: #f8f8f8; border: 1px solid #e0e0e0; text-align: center; color: #333; }
+        .xls-cell.err { background: #ffeaea; color: #cc0000; border-color: #ffcccc; font-weight: 700; }
+        .xls-cell.ok { color: green; font-weight: 700; }
+        .xls-cell.head { background: #217346; color: #fff; font-weight: 700; }
+        .ce-sticky { background: #FFF9C4; border: none; }
+        .sticky-h { font-weight: 800; font-size: 12px; color: #444; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #e8e49a; }
+        .sticky-row { font-size: 11px; color: #555; padding: 3px 0; display: flex; gap: 6px; align-items: flex-start; }
+        .ce-file-row { font-size: 10px; color: #555; padding: 3px 0; border-bottom: 1px solid #f0f0f0; display: flex; gap: 6px; align-items: center; direction: ltr; text-align: left; }
+        .ce-file-row:last-child { border-bottom: none; }
+        .ficon { font-size: 9px; border: 1px solid #ddd; border-radius: 3px; padding: 1px 3px; color: #777; }
+        .ce-call-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #f5f5f5; font-size: 11px; }
+        .ce-call-row:last-child { border-bottom: none; }
+        .missed-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff3b30; flex-shrink: 0; display: inline-block; }
+        .chaos-flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 50; pointer-events: none; }
+        .narrative { position: absolute; bottom: 10%; width: 100%; text-align: center; color: #fff; font-size: clamp(16px,2vw,22px); font-weight: 700; opacity: 0; z-index: 30; pointer-events: none; padding: 0 20px; transform: translateY(8px); }
+        .narrative.nb { color: oklch(65% 0.14 220); }
+        #cresult { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); grid-template-columns: 1fr 1fr; gap: 16px; z-index: 40; }
+        .cr-card { background: #fff; border-radius: 14px; overflow: hidden; width: 210px; box-shadow: 0 8px 40px rgba(0,0,0,.3); }
+        .cr-h { padding: 12px 16px; display: flex; align-items: center; gap: 8px; }
+        .cr-h-dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; opacity: .8; flex-shrink: 0; }
+        .cr-h span { font-size: 14px; font-weight: 800; color: #fff; }
+        .cr-b { padding: 12px 16px; font-size: 12px; }
+        .cr-kpi { display: flex; gap: 6px; align-items: baseline; padding: 4px 0; border-bottom: 1px solid oklch(93% 0.015 224); color: #44546A; }
+        .cr-kpi:last-child { border-bottom: none; }
+        .kpi-num { font-size: 22px; font-weight: 900; line-height: 1; color: #0D1420; }
+        .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: oklch(50% 0.17 224); margin-bottom: 12px; }
+        .h2 { font-size: clamp(28px,3.5vw,44px); font-weight: 800; letter-spacing: -.5px; line-height: 1.15; }
+        @media (max-width: 900px) { #cresult { grid-template-columns: 1fr 1fr; } .cr-card { width: 170px; } .ce { width: 180px; } }
       `}</style>
     </section>
   );
