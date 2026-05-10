@@ -4,24 +4,35 @@ const { about } = getSiteContent();
 ---
 
 <section class="about-section">
+  {/* Section number watermark */}
+  <div class="about-watermark" aria-hidden="true">03</div>
+
   <div class="container about-inner">
     <!-- Text side -->
-    <div class="about-text" data-animate="about-text">
-      <div class="accent-line" style="margin-bottom: 1.25rem;" />
-      <h2 class="section-title about-title">{about.title}</h2>
+    <div class="about-text" data-anim="about-text">
+      <div class="about-eyebrow">
+        <div class="eyebrow-dot" />
+        <span>מי אנחנו</span>
+      </div>
+      <h2 class="about-title">{about.title}</h2>
+      <div class="about-line" />
       <p class="about-body">{about.body}</p>
-
       <a href="#contact" class="btn-primary about-cta">לשיחת היכרות</a>
     </div>
 
     <!-- Values side -->
-    <div class="about-values" data-animate="about-values">
+    <div class="about-values" data-anim="about-values">
       {about.values.map((val, i) => (
-        <div class="about-value-card" style={`--delay: ${i * 0.12}s`}>
-          <div class="about-value-num">{String(i + 1).padStart(2, "0")}</div>
-          <div>
-            <h3 class="about-value-title">{val.title}</h3>
-            <p class="about-value-body">{val.body}</p>
+        <div class="value-card">
+          <div class="value-num">{String(i + 1).padStart(2, "0")}</div>
+          <div class="value-body">
+            <h3 class="value-title">{val.title}</h3>
+            <p class="value-text">{val.body}</p>
+          </div>
+          <div class="value-arrow" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
+              <path d="M14 10H6M10 6l-4 4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
           </div>
         </div>
       ))}
@@ -33,82 +44,153 @@ const { about } = getSiteContent();
   .about-section {
     padding-block: 6rem;
     background: #FFFFFF;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-watermark {
+    position: absolute;
+    top: -1rem;
+    left: -1rem;
+    font-size: clamp(8rem, 20vw, 16rem);
+    font-weight: 900;
+    color: rgba(0, 175, 198, 0.04);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.05em;
   }
 
   .about-inner {
+    position: relative;
+    z-index: 1;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1.1fr;
     gap: 5rem;
     align-items: start;
   }
 
+  .about-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 1.5rem;
+  }
+  .eyebrow-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00AFC6;
+    flex-shrink: 0;
+  }
+  .about-eyebrow span {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #00AFC6;
+  }
+
   .about-title {
-    margin-bottom: 1.25rem;
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 900;
+    color: #0B2545;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-line {
+    width: 48px;
+    height: 3px;
+    background: linear-gradient(90deg, #00AFC6, #0B7FD3);
+    border-radius: 9999px;
+    margin-bottom: 1.5rem;
   }
 
   .about-body {
     font-size: 1.05rem;
     color: #4A5568;
-    line-height: 1.8;
+    line-height: 1.85;
     margin-bottom: 2rem;
-    max-width: 46ch;
+    max-width: 44ch;
   }
 
   .about-cta {
     display: inline-flex;
   }
 
+  /* Values */
   .about-values {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1rem;
   }
 
-  .about-value-card {
+  .value-card {
     display: flex;
     align-items: flex-start;
     gap: 1.25rem;
     padding: 1.5rem;
-    background: #F7FBFC;
     border-radius: 1rem;
-    border: 1px solid #E2E8F0;
-    transition: border-color 0.2s ease;
+    border: 1px solid #F0F4F8;
+    background: #F8FAFC;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    position: relative;
   }
 
-  .about-value-card:hover {
-    border-color: #00AFC6;
+  .value-card:hover {
+    border-color: rgba(0,175,198,0.3);
+    background: #FFFFFF;
+    transform: translateX(-4px);
+    box-shadow: 0 4px 20px rgba(11,37,69,0.06);
   }
 
-  .about-value-num {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: rgba(0, 175, 198, 0.25);
+  .value-num {
+    font-size: 2rem;
+    font-weight: 900;
+    color: rgba(0,175,198,0.18);
     line-height: 1;
     flex-shrink: 0;
-    min-width: 2.5rem;
+    min-width: 3rem;
+    letter-spacing: -0.04em;
+    transition: color 0.2s ease;
   }
 
-  .about-value-title {
+  .value-card:hover .value-num {
+    color: rgba(0,175,198,0.35);
+  }
+
+  .value-body { flex: 1; }
+
+  .value-title {
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 800;
     color: #0B2545;
     margin-bottom: 0.375rem;
   }
 
-  .about-value-body {
+  .value-text {
     font-size: 0.875rem;
     color: #4A5568;
-    line-height: 1.6;
+    line-height: 1.65;
+  }
+
+  .value-arrow {
+    color: rgba(0,175,198,0.3);
+    margin-top: 2px;
+    flex-shrink: 0;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+  .value-card:hover .value-arrow {
+    color: #00AFC6;
+    transform: translateX(-4px);
   }
 
   @media (max-width: 900px) {
-    .about-inner {
-      grid-template-columns: 1fr;
-      gap: 3rem;
-    }
-    .about-body {
-      max-width: unset;
-    }
+    .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .about-body { max-width: unset; }
+    .about-watermark { font-size: 8rem; }
   }
 </style>
 
@@ -117,15 +199,15 @@ const { about } = getSiteContent();
   import { ScrollTrigger } from "gsap/ScrollTrigger";
   gsap.registerPlugin(ScrollTrigger);
 
-  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!prefersReduced) {
-    gsap.from("[data-animate='about-text']", {
-      opacity: 0, x: 30, duration: 0.8, ease: "power3.out",
-      scrollTrigger: { trigger: "[data-animate='about-text']", start: "top 80%" }
+  const pref = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!pref) {
+    gsap.from("[data-anim='about-text']", {
+      opacity: 0, x: 30, duration: 0.85, ease: "power3.out",
+      scrollTrigger: { trigger: "[data-anim='about-text']", start: "top 80%" }
     });
-    gsap.from("[data-animate='about-values'] .about-value-card", {
-      opacity: 0, y: 30, stagger: 0.1, duration: 0.6, ease: "power3.out",
-      scrollTrigger: { trigger: "[data-animate='about-values']", start: "top 80%" }
+    gsap.from(".value-card", {
+      opacity: 0, y: 24, stagger: 0.1, duration: 0.6, ease: "power3.out",
+      scrollTrigger: { trigger: "[data-anim='about-values']", start: "top 80%" }
     });
   }
 </script>
