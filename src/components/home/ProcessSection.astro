@@ -1,0 +1,193 @@
+---
+import { getSiteContent } from "../../data/dataLayer";
+const { process } = getSiteContent();
+---
+
+<section id="process" class="process-section">
+  <div class="container">
+    <!-- Header -->
+    <div class="process-head" data-animate="process-head">
+      <div class="accent-line" style="margin-bottom: 1.25rem;" />
+      <h2 class="section-title">{process.title}</h2>
+      <p class="section-subtitle" style="margin-top: 1rem; max-width: 52ch;">{process.subtitle}</p>
+    </div>
+
+    <!-- Steps -->
+    <div class="process-steps" data-animate="process-steps">
+      {process.steps.map((step, i) => (
+        <div class="process-step">
+          <!-- Connector line -->
+          {i < process.steps.length - 1 && (
+            <div class="process-connector" aria-hidden="true" />
+          )}
+
+          <!-- Number -->
+          <div class="process-num-wrap">
+            <div class="process-num">{step.number}</div>
+          </div>
+
+          <!-- Content -->
+          <div class="process-content">
+            <h3 class="process-step-title">{step.title}</h3>
+            <p class="process-step-body">{step.body}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="process-cta-wrap" data-animate="process-cta">
+      <p class="process-cta-label">רוצים לדעת יותר על התהליך שלנו?</p>
+      <a href="#contact" class="btn-primary">לשיחת אפיון ראשונית</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .process-section {
+    padding-block: 6rem;
+    background: #F7FBFC;
+  }
+
+  .process-head {
+    margin-bottom: 3.5rem;
+    max-width: 600px;
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    margin-bottom: 4rem;
+    position: relative;
+  }
+
+  .process-step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-inline: 0.75rem;
+  }
+
+  .process-connector {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, #E2E8F0 0%, #00AFC6 50%, #E2E8F0 100%);
+    z-index: 0;
+  }
+
+  .process-num-wrap {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 1.25rem;
+  }
+
+  .process-num {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 800;
+    background: #FFFFFF;
+    border: 2px solid #00AFC6;
+    color: #00AFC6;
+    box-shadow: 0 0 0 6px rgba(0, 175, 198, 0.08);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .process-step:hover .process-num {
+    background: #00AFC6;
+    color: #FFFFFF;
+  }
+
+  .process-content {
+    flex: 1;
+  }
+
+  .process-step-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0B2545;
+    margin-bottom: 0.5rem;
+  }
+
+  .process-step-body {
+    font-size: 0.8rem;
+    color: #4A5568;
+    line-height: 1.6;
+  }
+
+  .process-cta-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid #E2E8F0;
+  }
+
+  .process-cta-label {
+    font-size: 0.95rem;
+    color: #4A5568;
+    font-weight: 500;
+  }
+
+  @media (max-width: 900px) {
+    .process-steps {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .process-step {
+      flex-direction: row;
+      align-items: flex-start;
+      text-align: start;
+      gap: 1.25rem;
+      padding-inline: 0;
+    }
+
+    .process-connector {
+      display: none;
+    }
+
+    .process-num-wrap {
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+
+    .process-cta-wrap {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!prefersReduced) {
+    gsap.from("[data-animate='process-head']", {
+      opacity: 0, y: 30, duration: 0.8, ease: "power3.out",
+      scrollTrigger: { trigger: "[data-animate='process-head']", start: "top 80%" }
+    });
+    gsap.from("[data-animate='process-steps'] .process-step", {
+      opacity: 0, y: 30, stagger: 0.1, duration: 0.6, ease: "power3.out",
+      scrollTrigger: { trigger: "[data-animate='process-steps']", start: "top 80%" }
+    });
+    gsap.from("[data-animate='process-cta']", {
+      opacity: 0, y: 20, duration: 0.6, ease: "power3.out",
+      scrollTrigger: { trigger: "[data-animate='process-cta']", start: "top 85%" }
+    });
+  }
+</script>

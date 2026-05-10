@@ -1,0 +1,131 @@
+---
+import { getSiteContent } from "../../data/dataLayer";
+const { about } = getSiteContent();
+---
+
+<section class="about-section">
+  <div class="container about-inner">
+    <!-- Text side -->
+    <div class="about-text" data-animate="about-text">
+      <div class="accent-line" style="margin-bottom: 1.25rem;" />
+      <h2 class="section-title about-title">{about.title}</h2>
+      <p class="about-body">{about.body}</p>
+
+      <a href="#contact" class="btn-primary about-cta">לשיחת היכרות</a>
+    </div>
+
+    <!-- Values side -->
+    <div class="about-values" data-animate="about-values">
+      {about.values.map((val, i) => (
+        <div class="about-value-card" style={`--delay: ${i * 0.12}s`}>
+          <div class="about-value-num">{String(i + 1).padStart(2, "0")}</div>
+          <div>
+            <h3 class="about-value-title">{val.title}</h3>
+            <p class="about-value-body">{val.body}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-section {
+    padding-block: 6rem;
+    background: #FFFFFF;
+  }
+
+  .about-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .about-title {
+    margin-bottom: 1.25rem;
+  }
+
+  .about-body {
+    font-size: 1.05rem;
+    color: #4A5568;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    max-width: 46ch;
+  }
+
+  .about-cta {
+    display: inline-flex;
+  }
+
+  .about-values {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .about-value-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    background: #F7FBFC;
+    border-radius: 1rem;
+    border: 1px solid #E2E8F0;
+    transition: border-color 0.2s ease;
+  }
+
+  .about-value-card:hover {
+    border-color: #00AFC6;
+  }
+
+  .about-value-num {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: rgba(0, 175, 198, 0.25);
+    line-height: 1;
+    flex-shrink: 0;
+    min-width: 2.5rem;
+  }
+
+  .about-value-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0B2545;
+    margin-bottom: 0.375rem;
+  }
+
+  .about-value-body {
+    font-size: 0.875rem;
+    color: #4A5568;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .about-inner {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    .about-body {
+      max-width: unset;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!prefersReduced) {
+    gsap.from("[data-animate='about-text']", {
+      opacity: 0, x: 30, duration: 0.8, ease: "power3.out",
+      scrollTrigger: { trigger: "[data-animate='about-text']", start: "top 80%" }
+    });
+    gsap.from("[data-animate='about-values'] .about-value-card", {
+      opacity: 0, y: 30, stagger: 0.1, duration: 0.6, ease: "power3.out",
+      scrollTrigger: { trigger: "[data-animate='about-values']", start: "top 80%" }
+    });
+  }
+</script>

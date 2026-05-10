@@ -1,0 +1,205 @@
+---
+// Portfolio section — currently shows placeholder
+// TODO: Connect to Firestore portfolio collection and render real items
+// Projects will be added via /admin panel
+---
+
+<section class="portfolio-section">
+  <div class="container">
+    <!-- Header -->
+    <div class="portfolio-head" data-animate="portfolio-head">
+      <div class="accent-line" style="margin-bottom: 1.25rem;" />
+      <h2 class="section-title">עבודות שעשינו</h2>
+      <p class="section-subtitle" style="margin-top: 1rem; max-width: 50ch;">
+        מערכות שנבנו לפי תהליך אמיתי, לא לפי template.
+      </p>
+    </div>
+
+    <!-- Placeholder state -->
+    <div class="portfolio-placeholder" data-animate="portfolio-placeholder">
+      <div class="portfolio-placeholder-inner">
+        <!-- Placeholder visual -->
+        <div class="portfolio-placeholder-visual" aria-hidden="true">
+          <div class="pp-card pp-card--1">
+            <div class="pp-card-bar" style="background: #00AFC6;" />
+            <div class="pp-card-body">
+              <div class="pp-line pp-line--title" />
+              <div class="pp-line pp-line--sub" />
+              <div class="pp-line pp-line--sub pp-line--short" />
+            </div>
+          </div>
+          <div class="pp-card pp-card--2">
+            <div class="pp-card-bar" style="background: #E8843A;" />
+            <div class="pp-card-body">
+              <div class="pp-line pp-line--title" />
+              <div class="pp-line pp-line--sub" />
+              <div class="pp-line pp-line--sub pp-line--short" />
+            </div>
+          </div>
+          <div class="pp-card pp-card--3">
+            <div class="pp-card-bar" style="background: #7C5CBF;" />
+            <div class="pp-card-body">
+              <div class="pp-line pp-line--title" />
+              <div class="pp-line pp-line--sub" />
+              <div class="pp-line pp-line--sub pp-line--short" />
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-placeholder-text">
+          <div class="pp-badge">בקרוב</div>
+          <h3 class="pp-title">תיק עבודות בבנייה</h3>
+          <p class="pp-body">
+            פרויקטים שבנינו יתווספו לכאן בקרוב.<br/>
+            כולל מקרי בוחן, מוקאפים ותוצאות מדידות.
+          </p>
+          <!-- NOTE: "עיצוב גביע ישראל" ופרויקטים נוספים יועלו דרך פאנל הניהול -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .portfolio-section {
+    padding-block: 6rem;
+    background: #FFFFFF;
+  }
+
+  .portfolio-head {
+    margin-bottom: 3rem;
+  }
+
+  .portfolio-placeholder {
+    border-radius: 1.25rem;
+    border: 2px dashed #E2E8F0;
+    overflow: hidden;
+  }
+
+  .portfolio-placeholder-inner {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 0;
+    min-height: 280px;
+  }
+
+  .portfolio-placeholder-visual {
+    background: #F4F6F8;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    align-items: center;
+    border-left: 1px solid #E2E8F0;
+  }
+
+  .pp-card {
+    background: #FFFFFF;
+    border-radius: 0.75rem;
+    border: 1px solid #E2E8F0;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(11, 37, 69, 0.06);
+  }
+
+  .pp-card--2 {
+    transform: translateY(16px);
+  }
+
+  .pp-card--3 {
+    transform: translateY(-8px);
+  }
+
+  .pp-card-bar {
+    height: 4px;
+  }
+
+  .pp-card-body {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .pp-line {
+    height: 8px;
+    background: #E2E8F0;
+    border-radius: 4px;
+  }
+
+  .pp-line--title {
+    height: 12px;
+    width: 80%;
+    background: #CBD5E0;
+  }
+
+  .pp-line--sub {
+    width: 100%;
+  }
+
+  .pp-line--short {
+    width: 60%;
+  }
+
+  .portfolio-placeholder-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2.5rem;
+  }
+
+  .pp-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.75rem;
+    background: rgba(0, 175, 198, 0.1);
+    color: #0B7FD3;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    width: fit-content;
+  }
+
+  .pp-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0B2545;
+    margin-bottom: 0.75rem;
+  }
+
+  .pp-body {
+    font-size: 0.9rem;
+    color: #4A5568;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 720px) {
+    .portfolio-placeholder-inner {
+      grid-template-columns: 1fr;
+    }
+    .portfolio-placeholder-visual {
+      border-left: none;
+      border-bottom: 1px solid #E2E8F0;
+      min-height: 160px;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!prefersReduced) {
+    gsap.from("[data-animate='portfolio-head']", {
+      opacity: 0, y: 30, duration: 0.8, ease: "power3.out",
+      scrollTrigger: { trigger: "[data-animate='portfolio-head']", start: "top 80%" }
+    });
+    gsap.from("[data-animate='portfolio-placeholder']", {
+      opacity: 0, y: 30, duration: 0.7, ease: "power3.out",
+      scrollTrigger: { trigger: "[data-animate='portfolio-placeholder']", start: "top 80%" }
+    });
+  }
+</script>

@@ -1,0 +1,204 @@
+---
+import { getSiteContent } from "../../data/dataLayer";
+const content = getSiteContent();
+---
+
+<header id="navbar" class="navbar-wrapper">
+  <div class="container navbar-inner">
+    <!-- Logo -->
+    <a href="/" class="navbar-logo" aria-label="SHC - דף הבית">
+      <img src={content.brand.logoPath} alt="SHC לוגו" width="100" height="44" />
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="navbar-links" aria-label="ניווט ראשי">
+      <a href="/" class="nav-link">בית</a>
+      <a href="#systems" class="nav-link">מערכות</a>
+      <a href="#process" class="nav-link">תהליך עבודה</a>
+      <a href="#contact" class="nav-link">יצירת קשר</a>
+    </nav>
+
+    <!-- CTA -->
+    <div class="navbar-cta">
+      <a href="#contact" class="btn-primary navbar-btn">
+        לתיאום שיחת אפיון
+      </a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="פתח תפריט" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="mobile-menu" hidden>
+    <nav class="mobile-nav" aria-label="ניווט נייד">
+      <a href="/" class="mobile-nav-link">בית</a>
+      <a href="#systems" class="mobile-nav-link">מערכות</a>
+      <a href="#process" class="mobile-nav-link">תהליך עבודה</a>
+      <a href="#contact" class="mobile-nav-link">יצירת קשר</a>
+      <a href="#contact" class="btn-primary mobile-cta">לתיאום שיחת אפיון</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .navbar-wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 100;
+    background: rgba(247, 251, 252, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .navbar-wrapper.scrolled {
+    border-bottom-color: #E2E8F0;
+    box-shadow: 0 2px 20px rgba(11, 37, 69, 0.06);
+  }
+
+  .navbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    gap: 2rem;
+  }
+
+  .navbar-logo {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-logo img {
+    height: 44px;
+    width: auto;
+  }
+
+  .navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .nav-link {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4A5568;
+    text-decoration: none;
+    border-radius: 0.375rem;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+
+  .nav-link:hover {
+    color: #0B2545;
+    background: rgba(0, 175, 198, 0.07);
+  }
+
+  .navbar-btn {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .mobile-menu-btn span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #0B2545;
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .mobile-menu {
+    background: #FFFFFF;
+    border-top: 1px solid #E2E8F0;
+    padding: 1.5rem;
+  }
+
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .mobile-nav-link {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #0B2545;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: background 0.15s ease;
+  }
+
+  .mobile-nav-link:hover {
+    background: rgba(0, 175, 198, 0.07);
+  }
+
+  .mobile-cta {
+    margin-top: 0.5rem;
+    text-align: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .navbar-links,
+    .navbar-cta {
+      display: none;
+    }
+
+    .mobile-menu-btn {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  const navbar = document.getElementById("navbar");
+  const btn = document.getElementById("mobile-menu-btn");
+  const menu = document.getElementById("mobile-menu");
+
+  // Scroll effect
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 20) {
+      navbar?.classList.add("scrolled");
+    } else {
+      navbar?.classList.remove("scrolled");
+    }
+  });
+
+  // Mobile toggle
+  btn?.addEventListener("click", () => {
+    const isOpen = menu && !menu.hidden;
+    if (menu) menu.hidden = isOpen ?? true;
+    btn.setAttribute("aria-expanded", String(!isOpen));
+  });
+
+  // Close mobile menu on link click
+  menu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      if (menu) menu.hidden = true;
+      btn?.setAttribute("aria-expanded", "false");
+    });
+  });
+</script>
