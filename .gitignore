@@ -6,3 +6,8 @@ dist/
 .DS_Store
 .astro/
 .vscode/
+
+.agents/
+.firebase/
+apply-shc-design.sh
+skills-lock.json
